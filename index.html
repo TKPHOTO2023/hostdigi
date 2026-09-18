@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en-ZA" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hostdigi — Reliable Hosting, Seamless Domains | South African Web Hosting</title>
+<meta name="description" content="Fast NVMe web hosting, domains and WordPress hosting built for South Africa. Local Johannesburg and Cape Town infrastructure, free SSL, free migrations and real human support.">
+<meta name="theme-color" content="#050a12">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hostdigi — Reliable Hosting, Seamless Domains">
+<meta property="og:description" content="South African NVMe hosting, domains and WordPress. Local peering, free SSL, free migrations, 24/7 support.">
+<meta property="og:locale" content="en_ZA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a12'/%3E%3Cpath d='M9 23V9h3.4v5.2h7.2V9H23v14h-3.4v-5.6h-7.2V23z' fill='%2329e2a6'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   HOSTDIGI — design tokens
+   ============================================================ */
+:root{
+  --bg:#050a12;
+  --bg-2:#08111d;
+  --surface:rgba(255,255,255,.04);
+  --surface-2:rgba(255,255,255,.07);
+  --line:rgba(255,255,255,.10);
+  --line-2:rgba(255,255,255,.18);
+  --text:#e8f0fa;
+  --muted:#93a7bd;
+  --heading:#ffffff;
+  --mint:#29e2a6;
+  --cyan:#35c1ff;
+  --sun:#ffb020;
+  --coral:#ff6b5e;
+  --mint-ink:#04241a;
+  --scrim:rgba(3,7,13,.72);
+  --shadow:0 24px 60px -24px rgba(0,0,0,.75);
+  --ring:var(--mint);
+  --maxw:1220px;
+  --r-sm:10px; --r-md:16px; --r-lg:24px; --r-xl:32px;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#f5f8fc;
+  --bg-2:#ffffff;
+  --surface:rgba(9,25,43,.04);
+  --surface-2:#ffffff;
+  --line:rgba(9,25,43,.10);
+  --line-2:rgba(9,25,43,.18);
+  --text:#22384f;
+  --muted:#5b7389;
+  --heading:#08131f;
+  --mint:#059f76;
+  --cyan:#0a84c9;
+  --sun:#b2700a;
+  --mint-ink:#ffffff;
+  --scrim:rgba(255,255,255,.75);
+  --shadow:0 24px 60px -30px rgba(9,25,43,.28);
+  color-scheme:light;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:16px; line-height:1.65;
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  transition:background-color .35s ease,color .35s ease;
+}
+h1,h2,h3,h4,.display{font-family:'Sora',system-ui,sans-serif;color:var(--heading);line-height:1.15;letter-spacing:-.02em;font-weight:700}
+h1{font-size:clamp(2.2rem,5.2vw,4rem);font-weight:800}
+h2{font-size:clamp(1.7rem,3.6vw,2.7rem)}
+h3{font-size:clamp(1.1rem,1.8vw,1.35rem)}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+button,input,select{font:inherit;color:inherit}
+::selection{background:var(--mint);color:var(--mint-ink)}
+:focus-visible{outline:2px solid var(--ring);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-60px;z-index:400;background:var(--mint);color:var(--mint-ink);padding:10px 18px;border-radius:999px;font-weight:600;transition:top .2s}
+.skip:focus{top:16px}
+
+/* ---------- routing ---------- */
+.page{display:none}
+.page.is-active{display:block;animation:pageIn .45s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------- atoms ---------- */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mint);
+}
+.eyebrow::before{content:"";width:22px;height:2px;background:currentColor;border-radius:2px}
+.lede{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--muted);max-width:62ch}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 26px;border-radius:999px;border:1px solid transparent;
+  font-weight:600;font-size:.95rem;cursor:pointer;white-space:nowrap;
+  transition:transform .18s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--mint);color:var(--mint-ink);box-shadow:0 10px 30px -12px color-mix(in srgb,var(--mint) 80%,transparent)}
+.btn-primary:hover{box-shadow:0 16px 40px -14px color-mix(in srgb,var(--mint) 85%,transparent)}
+.btn-ghost{background:var(--surface);border-color:var(--line-2);color:var(--heading)}
+.btn-ghost:hover{border-color:var(--mint);color:var(--mint)}
+.btn-sm{padding:9px 18px;font-size:.87rem}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;
+  background:var(--surface);border:1px solid var(--line);font-size:.78rem;font-weight:600;color:var(--muted)
+}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px color-mix(in srgb,var(--mint) 22%,transparent)}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:28px;transition:border-color .25s ease,transform .25s ease,background .25s ease;
+}
+.card:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.section{padding:clamp(64px,9vw,118px) 0;position:relative}
+.section-head{max-width:720px;margin-bottom:46px;display:grid;gap:14px}
+.section-head.center{margin-inline:auto;text-align:center;justify-items:center}
+.grid{display:grid;gap:22px}
+.g-2{grid-template-columns:repeat(2,1fr)}
+.g-3{grid-template-columns:repeat(3,1fr)}
+.g-4{grid-template-columns:repeat(4,1fr)}
+
+/* ---------- nav ---------- */
+.nav-outer{position:sticky;top:0;z-index:200;padding:14px 0;transition:background .3s ease,backdrop-filter .3s}
+.nav-outer.stuck{background:var(--scrim);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:18px}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Sora';font-weight:800;font-size:1.22rem;color:var(--heading);letter-spacing:-.03em}
+.logo-mark{
+  width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--mint),var(--cyan));color:var(--mint-ink);
+  font-weight:800;font-size:1rem;box-shadow:0 8px 22px -10px var(--mint)
+}
+.logo b{font-weight:800;letter-spacing:-.03em}
+.logo b span{color:var(--mint)}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:auto}
+.nav-links a{
+  white-space:nowrap;
+  padding:9px 14px;border-radius:999px;font-size:.92rem;font-weight:500;color:var(--muted);
+  transition:color .2s,background .2s
+}
+.nav-links a:hover{color:var(--heading);background:var(--surface)}
+.nav-links a.active{color:var(--heading);background:var(--surface-2);border:1px solid var(--line)}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.icon-btn{
+  width:40px;height:40px;display:grid;place-items:center;border-radius:12px;
+  background:var(--surface);border:1px solid var(--line);cursor:pointer;color:var(--muted);
+  transition:color .2s,border-color .2s
+}
+.icon-btn:hover{color:var(--mint);border-color:var(--mint)}
+.burger{display:none}
+.mobile-menu{display:none;position:fixed;inset:0;z-index:190;background:var(--bg);padding:96px 24px 40px}
+.mobile-menu.open{display:block}
+.mobile-cta{display:none}
+.mobile-menu a.btn{border-bottom:0;font-size:.95rem;font-family:'Inter';padding:13px 20px}
+.mobile-menu a{display:block;padding:16px 4px;font-family:'Sora';font-size:1.3rem;font-weight:600;color:var(--heading);border-bottom:1px solid var(--line)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:clamp(56px,8vw,96px) 0 clamp(50px,7vw,86px);overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.hero-bg::before{
+  content:"";position:absolute;inset:-30%;
+  background:
+    radial-gradient(38% 42% at 18% 20%,color-mix(in srgb,var(--mint) 22%,transparent),transparent 70%),
+    radial-gradient(34% 38% at 82% 12%,color-mix(in srgb,var(--cyan) 20%,transparent),transparent 70%),
+    radial-gradient(40% 40% at 60% 88%,color-mix(in srgb,var(--sun) 12%,transparent),transparent 72%);
+  filter:blur(24px);animation:drift 22s ease-in-out infinite alternate
+}
+.hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(70% 60% at 50% 30%,#000,transparent 80%);
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 30%,#000,transparent 80%);
+  opacity:.6
+}
+@keyframes drift{to{transform:translate3d(3%,-3%,0) scale(1.08)}}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:52px;align-items:center}
+.hero-copy{display:grid;gap:22px;justify-items:start}
+.hero h1 .accent{
+  background:linear-gradient(100deg,var(--mint),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+.hero-proof{display:flex;flex-wrap:wrap;gap:10px 22px;color:var(--muted);font-size:.87rem}
+.hero-proof span{display:flex;align-items:center;gap:7px}
+.tick{width:16px;height:16px;flex:none;color:var(--mint)}
+
+/* ---------- domain search ---------- */
+.dsearch{
+  width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:16px;box-shadow:var(--shadow);backdrop-filter:blur(12px)
+}
+:root[data-theme="dark"] .dsearch{background:rgba(9,20,33,.72)}
+.dsearch-row{display:flex;gap:10px}
+.dsearch-field{
+  flex:1;display:flex;align-items:center;gap:10px;padding:0 16px;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:999px
+}
+:root[data-theme="dark"] .dsearch-field{background:rgba(255,255,255,.04)}
+.dsearch-field input{flex:1;background:none;border:0;outline:0;padding:14px 0;font-size:1rem}
+.dsearch-field input::placeholder{color:var(--muted)}
+.dsearch-tlds{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tld-chip{
+  display:flex;align-items:baseline;gap:6px;padding:6px 12px;border-radius:999px;
+  background:var(--surface);border:1px solid var(--line);font-size:.8rem
+}
+.tld-chip b{font-family:'JetBrains Mono';color:var(--heading)}
+.tld-chip i{font-style:normal;color:var(--muted)}
+.dresults{margin-top:16px;display:grid;gap:8px}
+.dresult{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--r-md);
+  background:var(--surface);border:1px solid var(--line);animation:pageIn .3s ease both
+}
+.dresult .name{font-family:'JetBrains Mono';font-weight:700;color:var(--heading);word-break:break-all}
+.dresult .status{font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:999px}
+.dresult.ok .status{background:color-mix(in srgb,var(--mint) 18%,transparent);color:var(--mint)}
+.dresult.taken .status{background:color-mix(in srgb,var(--coral) 18%,transparent);color:var(--coral)}
+.dresult .price{margin-left:auto;font-family:'JetBrains Mono';font-weight:700;color:var(--heading);white-space:nowrap}
+.dresult .btn{margin-left:12px}
+.dresult.taken .price,.dresult.taken .btn{opacity:.55}
+
+/* ---------- console panel (hero visual) ---------- */
+.console{
+  background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);overflow:hidden
+}
+:root[data-theme="dark"] .console{background:#071019}
+.console-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--surface)}
+.console-bar i{width:10px;height:10px;border-radius:50%;background:var(--line-2)}
+.console-bar i:first-child{background:var(--coral)}
+.console-bar i:nth-child(2){background:var(--sun)}
+.console-bar i:nth-child(3){background:var(--mint)}
+.console-bar .t{margin-left:8px;font-size:.78rem;color:var(--muted);font-family:'JetBrains Mono'}
+.console-body{padding:20px;display:grid;gap:16px}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:14px}
+.metric .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.metric .v{font-family:'JetBrains Mono';font-size:1.45rem;font-weight:700;color:var(--heading);margin-top:4px}
+.metric .v small{font-size:.8rem;color:var(--mint)}
+.spark{width:100%;height:64px}
+.log{font-family:'JetBrains Mono';font-size:.78rem;display:grid;gap:6px;color:var(--muted)}
+.log b{color:var(--mint);font-weight:700}
+.log .warn{color:var(--sun)}
+
+/* ---------- trust strip ---------- */
+.strip{border-block:1px solid var(--line);background:var(--surface);padding:22px 0}
+.strip-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px}
+.strip-item{display:flex;align-items:center;gap:11px;font-size:.88rem;color:var(--muted)}
+.strip-item b{font-family:'Sora';color:var(--heading);font-size:1.15rem;display:block;line-height:1.2}
+
+/* ---------- plans ---------- */
+.plan-toolbar{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;margin-bottom:34px}
+.tabs{display:inline-flex;gap:4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:999px;flex-wrap:wrap}
+.tab{
+  padding:9px 18px;border-radius:999px;border:0;background:none;cursor:pointer;
+  font-size:.9rem;font-weight:600;color:var(--muted);transition:.2s
+}
+.tab[aria-selected="true"]{background:var(--mint);color:var(--mint-ink)}
+.cycle{display:inline-flex;align-items:center;gap:12px;font-size:.9rem;color:var(--muted)}
+.switch{
+  position:relative;width:54px;height:30px;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);cursor:pointer;padding:0;flex:none
+}
+.switch::after{
+  content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
+  background:var(--muted);transition:transform .22s ease,background .22s
+}
+.switch[aria-checked="true"]{border-color:var(--mint)}
+.switch[aria-checked="true"]::after{transform:translateX(24px);background:var(--mint)}
+.save-pill{background:color-mix(in srgb,var(--sun) 18%,transparent);color:var(--sun);padding:4px 11px;border-radius:999px;font-size:.78rem;font-weight:700}
+
+.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:start}
+.plan{
+  position:relative;display:flex;flex-direction:column;gap:18px;padding:30px 26px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease
+}
+.plan:hover{transform:translateY(-6px);border-color:var(--line-2)}
+.plan.featured{
+  border-color:var(--mint);background:var(--surface-2);box-shadow:0 30px 70px -40px var(--mint)
+}
+:root[data-theme="dark"] .plan.featured{background:rgba(41,226,166,.06)}
+.plan-flag{
+  position:absolute;top:-12px;left:26px;background:var(--mint);color:var(--mint-ink);
+  font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:999px
+}
+.plan h3{font-size:1.15rem}
+.plan .blurb{font-size:.88rem;color:var(--muted);min-height:42px}
+.price{display:flex;align-items:flex-end;gap:6px}
+.price .cur{font-family:'Sora';font-weight:700;font-size:1.1rem;color:var(--muted);transform:translateY(-6px)}
+.price .amt{font-family:'Sora';font-weight:800;font-size:2.6rem;color:var(--heading);line-height:1;letter-spacing:-.04em}
+.price .per{font-size:.85rem;color:var(--muted);padding-bottom:5px}
+.price-note{font-size:.78rem;color:var(--muted);margin-top:-10px}
+.plan ul{list-style:none;display:grid;gap:10px;font-size:.89rem}
+.plan li{display:flex;gap:9px;align-items:flex-start}
+.plan li svg{flex:none;margin-top:3px;color:var(--mint)}
+.plan .btn{width:100%;margin-top:auto}
+
+/* ---------- feature grid ---------- */
+.feat{display:grid;gap:14px}
+.feat-ico{
+  width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--mint) 14%,transparent);color:var(--mint)
+}
+.feat.c2 .feat-ico{background:color-mix(in srgb,var(--cyan) 14%,transparent);color:var(--cyan)}
+.feat.c3 .feat-ico{background:color-mix(in srgb,var(--sun) 16%,transparent);color:var(--sun)}
+.feat p{font-size:.92rem;color:var(--muted)}
+
+/* ---------- bento ---------- */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.bento .card{display:grid;gap:14px;align-content:start}
+.bento .span-2{grid-column:span 2}
+.stat-big{font-family:'Sora';font-weight:800;font-size:clamp(2.4rem,5vw,3.6rem);color:var(--heading);line-height:1;letter-spacing:-.04em}
+.stat-big em{font-style:normal;color:var(--mint)}
+.map{position:relative;border-radius:var(--r-md);overflow:hidden;background:var(--bg-2);border:1px solid var(--line);min-height:190px}
+.pin{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 color-mix(in srgb,var(--mint) 60%,transparent);animation:pulse 2.6s infinite}
+.pin span{position:absolute;left:18px;top:-6px;font-size:.74rem;color:var(--muted);white-space:nowrap;font-family:'JetBrains Mono'}
+@keyframes pulse{70%{box-shadow:0 0 0 16px transparent}100%{box-shadow:0 0 0 0 transparent}}
+
+/* ---------- steps ---------- */
+.steps{counter-reset:s;display:grid;gap:18px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;padding:22px 24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
+.step::before{
+  counter-increment:s;content:counter(s,decimal-leading-zero);
+  font-family:'JetBrains Mono';font-weight:700;font-size:1rem;color:var(--mint);
+  background:color-mix(in srgb,var(--mint) 12%,transparent);width:44px;height:44px;border-radius:14px;display:grid;place-items:center
+}
+.step p{color:var(--muted);font-size:.92rem;margin-top:4px}
+
+/* ---------- table ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface)}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{padding:15px 20px;text-align:left;font-size:.92rem;border-bottom:1px solid var(--line)}
+th{font-family:'Sora';font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;background:var(--surface)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface)}
+td.tld{font-family:'JetBrains Mono';font-weight:700;color:var(--heading)}
+td.num{font-family:'JetBrains Mono';color:var(--heading)}
+.tag-pop{background:color-mix(in srgb,var(--mint) 16%,transparent);color:var(--mint);font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:999px;margin-left:8px}
+
+/* ---------- quotes ---------- */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.quote{display:grid;gap:16px;align-content:start}
+.quote p{font-size:.98rem;color:var(--text)}
+.stars{display:flex;gap:3px;color:var(--sun)}
+.who{display:flex;align-items:center;gap:12px;margin-top:auto}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:'Sora';font-weight:700;color:var(--mint-ink);background:linear-gradient(135deg,var(--mint),var(--cyan));font-size:.95rem}
+.who b{display:block;color:var(--heading);font-size:.9rem}
+.who span{font-size:.8rem;color:var(--muted)}
+
+/* ---------- faq ---------- */
+.faq{display:grid;gap:12px;max-width:860px;margin-inline:auto}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.q button{
+  width:100%;display:flex;align-items:center;gap:16px;justify-content:space-between;
+  padding:20px 24px;background:none;border:0;cursor:pointer;text-align:left;
+  font-family:'Sora';font-weight:600;font-size:1rem;color:var(--heading)
+}
+.q button .chev{flex:none;transition:transform .25s ease;color:var(--mint)}
+.q[open] button .chev,.q.open button .chev{transform:rotate(180deg)}
+.q .a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.q.open .a{max-height:420px}
+.q .a p{padding:0 24px 22px;color:var(--muted);font-size:.93rem}
+
+/* ---------- cta band ---------- */
+.band{
+  position:relative;overflow:hidden;border-radius:var(--r-xl);padding:clamp(38px,6vw,68px);
+  background:linear-gradient(120deg,color-mix(in srgb,var(--mint) 16%,var(--bg-2)),color-mix(in srgb,var(--cyan) 14%,var(--bg-2)));
+  border:1px solid var(--line-2);display:grid;gap:22px;justify-items:center;text-align:center
+}
+.band::after{
+  content:"";position:absolute;inset:0;z-index:0;opacity:.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:40px 40px;mask-image:radial-gradient(60% 70% at 50% 50%,#000,transparent)
+}
+.band>*{position:relative;z-index:1}
+
+/* ---------- forms ---------- */
+.form{display:grid;gap:16px}
+.field{display:grid;gap:7px}
+.field label{font-size:.83rem;font-weight:600;color:var(--muted)}
+.field input,.field textarea,.field select{
+  background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:13px 15px;outline:0;transition:border-color .2s
+}
+:root[data-theme="dark"] .field input,:root[data-theme="dark"] .field textarea,:root[data-theme="dark"] .field select{background:rgba(255,255,255,.04)}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--mint)}
+.form-note{font-size:.82rem;color:var(--muted)}
+.form-ok{background:color-mix(in srgb,var(--mint) 14%,transparent);border:1px solid var(--mint);color:var(--mint);padding:13px 16px;border-radius:var(--r-sm);font-size:.9rem}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);background:var(--bg-2);padding:64px 0 32px;margin-top:40px}
+.foot-grid{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:34px}
+.foot-col h4{font-family:'Sora';font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:16px}
+.foot-col a{display:block;padding:5px 0;font-size:.9rem;color:var(--muted);transition:color .2s}
+.foot-col a:hover{color:var(--mint)}
+.foot-about p{font-size:.9rem;color:var(--muted);margin:14px 0 18px;max-width:38ch}
+.socials{display:flex;gap:10px}
+.socials a{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.socials a:hover{color:var(--mint);border-color:var(--mint)}
+.foot-bottom{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font-size:.84rem;color:var(--muted)}
+.pay{display:flex;gap:8px;flex-wrap:wrap}
+.pay span{padding:5px 11px;border:1px solid var(--line);border-radius:8px;font-size:.75rem;font-weight:600}
+
+/* ---------- responsive ---------- */
+@media (max-width:1000px){
+  .hero-grid{grid-template-columns:1fr;gap:36px}
+  .plans{grid-template-columns:repeat(2,1fr)}
+  .g-4{grid-template-columns:repeat(2,1fr)}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .bento .span-2{grid-column:span 2}
+  .quotes{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:repeat(2,1fr);gap:28px}
+  .nav-links{display:none}
+  .burger{display:grid}
+  .nav-actions .btn{display:none}
+  .mobile-cta{display:flex;gap:10px;margin-top:26px}
+  .mobile-cta .btn{flex:1}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .g-2,.g-3,.g-4,.plans,.bento{grid-template-columns:1fr}
+  .bento .span-2{grid-column:span 1}
+  .metric-row{grid-template-columns:1fr}
+  .dsearch-row{flex-direction:column}
+  .dsearch-row .btn{width:100%}
+  .foot-grid{grid-template-columns:1fr}
+  .dresult{flex-wrap:wrap}
+  .dresult .price{margin-left:0}
+  .dresult .btn{margin-left:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ===================== NAV ===================== -->
+<div class="nav-outer" id="navOuter">
+  <nav class="wrap nav" aria-label="Primary">
+    <a class="logo" href="#/" data-page="home"><span class="logo-mark">H</span><b>host<span>digi</span></b></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#/" data-page="home">Home</a>
+      <a href="#/hosting" data-page="hosting">Web Hosting</a>
+      <a href="#/domains" data-page="domains">Domains</a>
+      <a href="#/wordpress" data-page="wordpress">WordPress</a>
+      <a href="#/cloud" data-page="cloud">Cloud &amp; VPS</a>
+      <a href="#/pricing" data-page="pricing">Pricing</a>
+      <a href="#/support" data-page="support">Support</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" aria-label="Switch colour theme" title="Switch theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+      <a class="btn btn-ghost btn-sm" href="#/support">Client Area</a>
+      <a class="btn btn-primary btn-sm" href="#/pricing">Get hosting</a>
+      <button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+</div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#/" data-page="home">Home</a>
+  <a href="#/hosting" data-page="hosting">Web Hosting</a>
+  <a href="#/domains" data-page="domains">Domains</a>
+  <a href="#/wordpress" data-page="wordpress">WordPress</a>
+  <a href="#/cloud" data-page="cloud">Cloud &amp; VPS</a>
+  <a href="#/pricing" data-page="pricing">Pricing</a>
+  <a href="#/support" data-page="support">Support</a>
+  <div class="mobile-cta">
+    <a class="btn btn-ghost" href="#/support">Client Area</a>
+    <a class="btn btn-primary" href="#/pricing">Get hosting</a>
+  </div>
+</div>
+
+<div id="main">
+<!-- ===================== HOME ===================== -->
+<main class="page is-active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="badge"><i class="dot"></i> Hosted in South Africa · JHB &amp; CPT</span>
+        <h1>Reliable hosting.<br><span class="accent">Seamless domains.</span></h1>
+        <p class="lede">Hostdigi runs your website on NVMe servers peered locally at NAPAfrica — so pages load in milliseconds for the people who actually buy from you. Free SSL, free migration, and support that answers in minutes, not days.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#/pricing">See hosting plans
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#/support">Talk to a human</a>
+        </div>
+        <div class="hero-proof">
+          <span><svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12.5 9 17.5 20 6.5"/></svg> 99.9% uptime SLA</span>
+          <span><svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12.5 9 17.5 20 6.5"/></svg> Free migration</span>
+          <span><svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12.5 9 17.5 20 6.5"/></svg> 30-day money back</span>
+        </div>
+      </div>
+
+      <div class="console" aria-label="Live infrastructure snapshot (illustrative)">
+        <div class="console-bar"><i></i><i></i><i></i><span class="t">hostdigi · status · za-jhb-01</span></div>
+        <div class="console-body">
+          <div class="metric-row">
+            <div class="metric"><div class="k">Uptime 30d</div><div class="v" data-count="99.98" data-dec="2">0<small>%</small></div></div>
+            <div class="metric"><div class="k">TTFB Gauteng</div><div class="v" data-count="41">0<small>ms</small></div></div>
+            <div class="metric"><div class="k">Sites hosted</div><div class="v" data-count="7400">0<small>+</small></div></div>
+          </div>
+          <svg class="spark" viewBox="0 0 320 64" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--mint)" stop-opacity=".45"/><stop offset="100%" stop-color="var(--mint)" stop-opacity="0"/>
+            </linearGradient></defs>
+            <path d="M0,46 L32,40 L64,44 L96,28 L128,34 L160,18 L192,26 L224,14 L256,22 L288,10 L320,16 L320,64 L0,64 Z" fill="url(#sg)"/>
+            <path d="M0,46 L32,40 L64,44 L96,28 L128,34 L160,18 L192,26 L224,14 L256,22 L288,10 L320,16" fill="none" stroke="var(--mint)" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+          <div class="log">
+            <div><b>✓</b> LiteSpeed cache warmed · 12 ms</div>
+            <div><b>✓</b> Let's Encrypt SSL renewed · shop.example.co.za</div>
+            <div><span class="warn">⚡</span> Nightly off-site backup complete · 04:02 SAST</div>
+            <div><b>✓</b> DDoS filter active · 0 incidents today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap" style="margin-top:38px">
+      <div class="dsearch">
+        <form class="dsearch-row" id="domainForm" role="search" aria-label="Domain search">
+          <div class="dsearch-field">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 6 5 12 0 18-5-6-5-12 0-18"/></svg>
+            <label class="sr-only" for="domainInput">Search for a domain name</label>
+            <input id="domainInput" type="text" placeholder="yourbusiness.co.za" autocomplete="off" spellcheck="false">
+          </div>
+          <button class="btn btn-primary" type="submit">Search domains</button>
+        </form>
+        <div class="dsearch-tlds" id="tldChips"></div>
+        <div class="dresults" id="domainResults" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap strip-inner" id="stripRow"></div>
+  </div>
+
+  <!-- plans -->
+  <section class="section" id="plans">
+    <div class="wrap">
+      <div class="section-head center">
+        <span class="eyebrow">Hosting plans</span>
+        <h2>Pick the plan, not the puzzle</h2>
+        <p class="lede">Every plan includes free SSL, daily backups, cPanel, unlimited email and a free .co.za domain for the first year. No setup fees, ever.</p>
+      </div>
+
+      <div class="plan-toolbar">
+        <div class="tabs" role="tablist" aria-label="Hosting type" id="planTabs"></div>
+        <div class="cycle">
+          <span>Monthly</span>
+          <button class="switch" id="cycleSwitch" role="switch" aria-checked="true" aria-label="Toggle annual billing"></button>
+          <span>Annual</span>
+          <span class="save-pill">2 months free</span>
+        </div>
+      </div>
+
+      <div class="plans" id="planGrid"></div>
+      <p class="form-note" style="margin-top:18px;text-align:center">Prices exclude VAT · Billed in ZAR · Cancel any time within 30 days for a full refund.</p>
+    </div>
+  </section>
+
+  <!-- why -->
+  <section class="section" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Why Hostdigi</span>
+        <h2>Built for South African traffic first</h2>
+        <p class="lede">Most "cheap" hosting serves your site from Europe or the US. Every extra hop costs you a conversion. We keep the whole stack local.</p>
+      </div>
+      <div class="grid g-3" id="featGrid"></div>
+    </div>
+  </section>
+
+  <!-- bento -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><span class="eyebrow">The numbers</span><h2>Quietly excellent infrastructure</h2></div>
+      <div class="bento">
+        <div class="card span-2">
+          <h3>Two local regions, one control panel</h3>
+          <p class="lede" style="font-size:.95rem">Deploy in Johannesburg or Cape Town, with automatic failover between them and NAPAfrica peering to every major SA ISP.</p>
+          <div class="map" id="zaMap">
+            <svg viewBox="0 0 320 190" width="100%" height="190" aria-hidden="true" style="opacity:.28">
+              <path d="M40,60 C70,40 110,42 140,52 C175,64 210,50 250,62 C280,72 292,100 276,128 C252,168 196,178 150,170 C104,162 62,140 46,110 C36,92 30,70 40,60 Z" fill="none" stroke="var(--mint)" stroke-width="1.5"/>
+            </svg>
+            <div class="pin" style="left:62%;top:38%"><span>JHB · za-jhb-01</span></div>
+            <div class="pin" style="left:26%;top:76%"><span>CPT · za-cpt-01</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="stat-big"><em>41</em>ms</div>
+          <p class="lede" style="font-size:.92rem">Median time-to-first-byte from Gauteng on our shared platform.</p>
+        </div>
+        <div class="card">
+          <div class="stat-big"><em>99.98</em>%</div>
+          <p class="lede" style="font-size:.92rem">Measured uptime across the last 30 days, published publicly on our status page.</p>
+        </div>
+        <div class="card span-2">
+          <h3>Nothing extra to buy</h3>
+          <p class="lede" style="font-size:.95rem">SSL, daily off-site backups, malware scanning, email, staging and a website builder are included on every plan — not sold back to you at renewal.</p>
+          <div class="dsearch-tlds" style="margin-top:4px">
+            <span class="tld-chip"><b>Free SSL</b></span><span class="tld-chip"><b>Daily backups</b></span>
+            <span class="tld-chip"><b>cPanel</b></span><span class="tld-chip"><b>LiteSpeed</b></span>
+            <span class="tld-chip"><b>Imunify360</b></span><span class="tld-chip"><b>Staging</b></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- migration -->
+  <section class="section" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap grid g-2" style="gap:44px;align-items:center">
+      <div class="section-head" style="margin:0">
+        <span class="eyebrow">Free migration</span>
+        <h2>We move your site. You keep trading.</h2>
+        <p class="lede">Our engineers migrate your site, email and databases from any host — cPanel or not — outside business hours, then hold your hand through the DNS cutover. No downtime, no invoice.</p>
+        <a class="btn btn-primary" href="#/support" style="margin-top:10px">Book a free migration</a>
+      </div>
+      <div class="steps">
+        <div class="step"><div><h3>Send us your login</h3><p>Old host credentials or a cPanel backup — whichever you have.</p></div></div>
+        <div class="step"><div><h3>We clone and test</h3><p>Your site runs on a staging URL on our platform while the old one stays live.</p></div></div>
+        <div class="step"><div><h3>You approve, we cut over</h3><p>DNS is switched at a time you pick, with mail queued so nothing bounces.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- quotes -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head center"><span class="eyebrow">Customers</span><h2>Trusted by SA businesses</h2></div>
+      <div class="quotes" id="quoteGrid"></div>
+    </div>
+  </section>
+
+  <!-- faq -->
+  <section class="section" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head center"><span class="eyebrow">FAQ</span><h2>Straight answers</h2></div>
+      <div class="faq" id="faqList"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="band">
+        <span class="eyebrow">Ready when you are</span>
+        <h2>Get your site on a host that keeps up</h2>
+        <p class="lede" style="text-align:center">Start in under five minutes. Keep your domain, keep your email, keep your weekends.</p>
+        <div class="hero-cta" style="justify-content:center">
+          <a class="btn btn-primary" href="#/pricing">Choose a plan</a>
+          <a class="btn btn-ghost" href="#/domains">Search a domain</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== WEB HOSTING ===================== -->
+<main class="page" id="page-hosting">
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Web hosting</span>
+        <h1 style="font-size:clamp(2rem,4.4vw,3.2rem)">Shared hosting that behaves like a private server</h1>
+        <p class="lede">LiteSpeed Enterprise, NVMe storage and per-account resource isolation. Your neighbour's traffic spike is not your problem.</p>
+      </div>
+      <div class="grid g-3" id="hostingFeat"></div>
+    </div>
+  </section>
+  <section class="section" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head center"><span class="eyebrow">Compare</span><h2>What's in every plan</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Feature</th><th>Starter</th><th>Business</th><th>Pro</th><th>Agency</th></tr></thead>
+          <tbody id="compareBody"></tbody>
+        </table>
+      </div>
+      <div style="text-align:center;margin-top:28px"><a class="btn btn-primary" href="#/pricing">See prices</a></div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== DOMAINS ===================== -->
+<main class="page" id="page-domains">
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Domains</span>
+        <h1 style="font-size:clamp(2rem,4.4vw,3.2rem)">Find the name. Keep the control.</h1>
+        <p class="lede">Register, transfer and manage .co.za and 400+ international extensions from one dashboard — with free DNS management, free WHOIS privacy where the registry allows it, and no lock-in.</p>
+      </div>
+      <div class="dsearch" style="max-width:840px">
+        <form class="dsearch-row" id="domainForm2" role="search" aria-label="Domain search">
+          <div class="dsearch-field">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 6 5 12 0 18-5-6-5-12 0-18"/></svg>
+            <label class="sr-only" for="domainInput2">Search for a domain name</label>
+            <input id="domainInput2" type="text" placeholder="yourbusiness.co.za" autocomplete="off" spellcheck="false">
+          </div>
+          <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+        <div class="dresults" id="domainResults2" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+  <section class="section" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head"><span class="eyebrow">Pricing</span><h2>Domain pricing</h2><p class="lede">Registry-linked pricing in rands. Transfers include a 12-month renewal where the registry supports it.</p></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Extension</th><th>Register</th><th>Transfer</th><th>Renew</th></tr></thead>
+          <tbody id="tldBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap grid g-3" id="domainFeat"></div>
+  </section>
+</main>
+
+<!-- ===================== WORDPRESS ===================== -->
+<main class="page" id="page-wordpress">
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Managed WordPress</span>
+        <h1 style="font-size:clamp(2rem,4.4vw,3.2rem)">WordPress, tuned and looked after</h1>
+        <p class="lede">One-click installs, automatic core and plugin updates with visual regression checks, object caching and a staging site on every plan. If an update breaks your site, we roll it back before you notice.</p>
+        <div class="hero-cta"><a class="btn btn-primary" href="#/pricing">See WordPress plans</a><a class="btn btn-ghost" href="#/support">Migrate my site free</a></div>
+      </div>
+      <div class="grid g-3" id="wpFeat"></div>
+    </div>
+  </section>
+  <section class="section" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head center"><span class="eyebrow">Performance</span><h2>What LiteSpeed + NVMe actually buys you</h2></div>
+      <div class="bento">
+        <div class="card"><div class="stat-big"><em>6×</em></div><p class="lede" style="font-size:.92rem">More concurrent WooCommerce checkouts than the same spec on Apache, in our internal load tests.</p></div>
+        <div class="card"><div class="stat-big"><em>0.4</em>s</div><p class="lede" style="font-size:.92rem">Typical Largest Contentful Paint for a cached WordPress page served to Gauteng.</p></div>
+        <div class="card"><div class="stat-big"><em>30</em></div><p class="lede" style="font-size:.92rem">Days of off-site restore points, restorable to staging with one click.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== CLOUD / VPS ===================== -->
+<main class="page" id="page-cloud">
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Cloud &amp; VPS</span>
+        <h1 style="font-size:clamp(2rem,4.4vw,3.2rem)">Dedicated resources, local latency</h1>
+        <p class="lede">NVMe-backed KVM instances in Johannesburg and Cape Town. Root access, hourly snapshots, and managed options if you'd rather we ran it.</p>
+      </div>
+      <div class="plans" id="vpsGrid"></div>
+      <p class="form-note" style="margin-top:18px">All instances include 1 Gbps uplink, unmetered local (NAPAfrica) traffic and a /64 IPv6 allocation.</p>
+    </div>
+  </section>
+  <section class="section" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap grid g-3" id="cloudFeat"></div>
+  </section>
+</main>
+
+<!-- ===================== PRICING ===================== -->
+<main class="page" id="page-pricing">
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head center">
+        <span class="eyebrow">Pricing</span>
+        <h1 style="font-size:clamp(2rem,4.4vw,3.2rem)">Simple, honest, in rands</h1>
+        <p class="lede">The price you sign up at is the price you renew at. No first-year tricks.</p>
+      </div>
+      <div class="plan-toolbar">
+        <div class="tabs" role="tablist" aria-label="Hosting type" id="planTabs2"></div>
+        <div class="cycle">
+          <span>Monthly</span>
+          <button class="switch" id="cycleSwitch2" role="switch" aria-checked="true" aria-label="Toggle annual billing"></button>
+          <span>Annual</span><span class="save-pill">2 months free</span>
+        </div>
+      </div>
+      <div class="plans" id="planGrid2"></div>
+      <p class="form-note" style="margin-top:18px;text-align:center">Prices exclude VAT · Billed in ZAR · 30-day money-back guarantee.</p>
+    </div>
+  </section>
+  <section class="section" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head center"><span class="eyebrow">Questions</span><h2>Billing, plainly</h2></div>
+      <div class="faq" id="faqList2"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== SUPPORT ===================== -->
+<main class="page" id="page-support">
+  <section class="section">
+    <div class="wrap grid g-2" style="gap:44px;align-items:start">
+      <div class="section-head" style="margin:0">
+        <span class="eyebrow">Support</span>
+        <h1 style="font-size:clamp(2rem,4.4vw,3.2rem)">Real people, local hours, fast replies</h1>
+        <p class="lede">Tickets are answered by engineers in South Africa — median first response under 12 minutes during business hours, under 40 minutes overnight.</p>
+        <div class="grid" style="gap:12px;margin-top:8px">
+          <div class="card" style="padding:20px"><h3 style="font-size:1rem">Sales &amp; new accounts</h3><p class="lede" style="font-size:.9rem">Mon–Fri, 08:00–17:00 SAST · <a href="#/support" style="color:var(--mint)">sales@hostdigi.co.za</a></p></div>
+          <div class="card" style="padding:20px"><h3 style="font-size:1rem">Technical support</h3><p class="lede" style="font-size:.9rem">24/7/365 via ticket and live chat · <a href="#/support" style="color:var(--mint)">support@hostdigi.co.za</a></p></div>
+          <div class="card" style="padding:20px"><h3 style="font-size:1rem">Emergency / downtime</h3><p class="lede" style="font-size:.9rem">Priority line for hosting customers, published in your client area.</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:6px">Send us a message</h3>
+        <p class="lede" style="font-size:.9rem;margin-bottom:18px">Tell us what you're running and we'll tell you honestly which plan fits — including if that's a smaller one.</p>
+        <form class="form" id="contactForm">
+          <div class="grid g-2" style="gap:14px">
+            <div class="field"><label for="cName">Name</label><input id="cName" required autocomplete="name"></div>
+            <div class="field"><label for="cEmail">Email</label><input id="cEmail" type="email" required autocomplete="email"></div>
+          </div>
+          <div class="field"><label for="cTopic">I need help with</label>
+            <select id="cTopic"><option>Choosing a plan</option><option>Migrating my site</option><option>Domains &amp; DNS</option><option>Billing</option><option>Something is broken</option></select>
+          </div>
+          <div class="field"><label for="cMsg">Message</label><textarea id="cMsg" rows="5" required></textarea></div>
+          <button class="btn btn-primary" type="submit">Send message</button>
+          <p class="form-note">This demo form validates locally and does not send anywhere yet — wire it to your WHMCS ticket API or a form handler before launch.</p>
+        </form>
+        <div id="formOk" class="form-ok" hidden>Thanks — we'd normally have this in the queue now. Hook the form up to WHMCS to go live.</div>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-about">
+        <a class="logo" href="#/" data-page="home"><span class="logo-mark">H</span><b>host<span>digi</span></b></a>
+        <p>Hostdigi (Pty) Ltd — premium hosting and domain services, born in South Africa, serving customers worldwide.</p>
+        <div class="socials">
+          <a href="#/" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h3l1-4h-4V8c0-1.1.3-1.8 1.9-1.8H17V2.6C16.4 2.5 15.2 2.4 14 2.4 11.2 2.4 9.3 4.1 9.3 7.2V10H6v4h3.3v8H13Z"/></svg></a>
+          <a href="#/" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3.2l-7 8 8.2 10h-6.4l-5-6.1L4.8 21H1.6l7.5-8.6L1.2 3h6.6l4.5 5.6L17.5 3Zm-1.1 16.1h1.8L7.7 4.8H5.8l10.6 14.3Z"/></svg></a>
+          <a href="#/" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.9 21H3.3V9h3.6v12ZM5.1 7.4A2.1 2.1 0 1 1 5.1 3a2.1 2.1 0 0 1 0 4.4ZM21 21h-3.6v-5.8c0-1.4 0-3.2-2-3.2s-2.3 1.5-2.3 3.1V21H9.5V9H13v1.6h.1a3.8 3.8 0 0 1 3.4-1.9c3.7 0 4.4 2.4 4.4 5.5V21Z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Hosting</h4>
+        <a href="#/hosting">Web hosting</a><a href="#/wordpress">WordPress hosting</a><a href="#/cloud">Cloud &amp; VPS</a><a href="#/hosting">Reseller hosting</a><a href="#/hosting">Business email</a>
+      </div>
+      <div class="foot-col"><h4>Domains</h4>
+        <a href="#/domains">Register a domain</a><a href="#/domains">Transfer a domain</a><a href="#/domains">Domain pricing</a><a href="#/domains">DNS management</a><a href="#/domains">WHOIS lookup</a>
+      </div>
+      <div class="foot-col"><h4>Company</h4>
+        <a href="#/support">About Hostdigi</a><a href="#/support">Contact us</a><a href="#/support">Status page</a><a href="#/support">Knowledge base</a><a href="#/support">Client area</a>
+      </div>
+      <div class="foot-col"><h4>Legal</h4>
+        <a href="#/support">Terms of service</a><a href="#/support">Acceptable use policy</a><a href="#/support">Privacy &amp; POPIA</a><a href="#/support">SLA</a><a href="#/support">Refund policy</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr">2026</span> Hostdigi (Pty) Ltd. All rights reserved.</span>
+      <div class="pay"><span>Visa</span><span>Mastercard</span><span>EFT</span><span>Debit order</span><span>PayFast</span><span>Ozow</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ==========================================================================
+   SITE DATA  —  EDIT EVERYTHING HERE
+   --------------------------------------------------------------------------
+   Prices below are PLACEHOLDERS benchmarked against the SA market (Sept 2026).
+   Replace them with Hostdigi's real WHMCS product pricing before launch.
+   Monthly amounts are ZAR ex-VAT; annual price is derived as month * 10
+   ("2 months free") unless you set `annual` explicitly on a plan.
+   ========================================================================== */
+const DATA = {
+  currency: 'R',
+  tlds: [
+    { tld:'.co.za',  reg:99,   transfer:99,   renew:120,  popular:true },
+    { tld:'.africa', reg:249,  transfer:249,  renew:279 },
+    { tld:'.com',    reg:229,  transfer:229,  renew:279,  popular:true },
+    { tld:'.net',    reg:289,  transfer:289,  renew:329 },
+    { tld:'.org',    reg:279,  transfer:279,  renew:319 },
+    { tld:'.io',     reg:1099, transfer:1099, renew:1199 },
+    { tld:'.dev',    reg:329,  transfer:329,  renew:369 },
+    { tld:'.shop',   reg:189,  transfer:389,  renew:449 },
+    { tld:'.org.za', reg:109,  transfer:109,  renew:130 },
+    { tld:'.web.za', reg:109,  transfer:109,  renew:130 }
+  ],
+  planTabs: [
+    { id:'shared', label:'Web hosting' },
+    { id:'wordpress', label:'WordPress' },
+    { id:'reseller', label:'Reseller' }
+  ],
+  plans: {
+    shared: [
+      { name:'Starter', blurb:'One small site, done properly.', month:59,
+        features:['1 website','10 GB NVMe storage','25 GB monthly traffic','10 mailboxes','Free SSL + daily backups','Free .co.za domain (year 1)'] },
+      { name:'Business', blurb:'Growing sites and small stores.', month:129, featured:true,
+        features:['5 websites','40 GB NVMe storage','Unmetered local traffic','Unlimited mailboxes','LiteSpeed cache + staging','Free migration & domain'] },
+      { name:'Pro', blurb:'Busy WooCommerce and lead-gen sites.', month:249,
+        features:['20 websites','100 GB NVMe storage','Unmetered local traffic','Priority support queue','Dedicated PHP workers','Imunify360 malware defence'] },
+      { name:'Agency', blurb:'Client portfolios under one roof.', month:499,
+        features:['Unlimited websites','250 GB NVMe storage','White-label cPanel','Free dedicated IP + SSL','30-day off-site restore points','Named account engineer'] }
+    ],
+    wordpress: [
+      { name:'WP Start', blurb:'A managed home for one site.', month:99,
+        features:['1 WordPress site','20 GB NVMe storage','Auto core & plugin updates','Object cache + LiteSpeed','Free SSL & CDN','1-click staging'] },
+      { name:'WP Grow', blurb:'The sweet spot for most businesses.', month:199, featured:true,
+        features:['5 WordPress sites','60 GB NVMe storage','Visual regression update checks','Automatic rollback on failure','WooCommerce tuning','Free migration'] },
+      { name:'WP Scale', blurb:'High-traffic content and commerce.', month:399,
+        features:['15 WordPress sites','150 GB NVMe storage','Dedicated Redis instance','Priority 24/7 support','30-day restore points','Uptime & Core Web Vitals reports'] },
+      { name:'WP Agency', blurb:'Manage every client site in one place.', month:749,
+        features:['Unlimited WordPress sites','400 GB NVMe storage','Bulk updates across sites','White-label client reports','Staging for every install','Named account engineer'] }
+    ],
+    reseller: [
+      { name:'Reseller 25', blurb:'Start selling hosting today.', month:299,
+        features:['25 cPanel accounts','100 GB NVMe storage','WHM + white-label nameservers','Free SSL on every account','Overselling allowed','Billing integration help'] },
+      { name:'Reseller 60', blurb:'A book of steady clients.', month:549, featured:true,
+        features:['60 cPanel accounts','250 GB NVMe storage','Free WHMCS licence','Priority support queue','Off-site nightly backups','Free migrations for clients'] },
+      { name:'Reseller 150', blurb:'Serious volume, still hands-off.', month:999,
+        features:['150 cPanel accounts','600 GB NVMe storage','Dedicated IP + private SSL','Root-level escalation path','Custom resource limits','Named account engineer'] },
+      { name:'Reseller Max', blurb:'Your own platform, our metal.', month:1899,
+        features:['Unlimited cPanel accounts','1.5 TB NVMe storage','Dedicated node option','White-label everything','99.99% uptime SLA','Quarterly capacity reviews'] }
+    ]
+  },
+  vps: [
+    { name:'Cloud 2', blurb:'Dev, staging and light apps.', month:349,
+      features:['2 vCPU · 4 GB RAM','80 GB NVMe','2 TB international traffic','Full root access','Hourly snapshots (7 days)','JHB or CPT region'] },
+    { name:'Cloud 4', blurb:'Production apps and databases.', month:649, featured:true,
+      features:['4 vCPU · 8 GB RAM','160 GB NVMe','4 TB international traffic','Free cPanel licence option','Managed add-on available','JHB or CPT region'] },
+    { name:'Cloud 8', blurb:'Heavy workloads, room to grow.', month:1249,
+      features:['8 vCPU · 16 GB RAM','320 GB NVMe','8 TB international traffic','Private networking','Dedicated support engineer','Multi-region failover'] },
+    { name:'Cloud 16', blurb:'Cluster-grade, single tenant.', month:2399,
+      features:['16 vCPU · 32 GB RAM','640 GB NVMe','Unmetered local traffic','NVMe RAID redundancy','Custom firewall rules','99.99% uptime SLA'] }
+  ],
+  strip: [
+    { big:'99.98%', small:'Uptime, last 30 days' },
+    { big:'41 ms', small:'Median TTFB from Gauteng' },
+    { big:'< 12 min', small:'Median first ticket reply' },
+    { big:'7 400+', small:'Websites hosted' },
+    { big:'R0', small:'Migration &amp; setup fees' }
+  ],
+  features: [
+    { icon:'bolt',   c:'',   title:'NVMe + LiteSpeed everywhere',
+      body:'Every shared server runs LiteSpeed Enterprise on NVMe drives, with per-account CPU and I/O limits so one busy site can never slow yours down.' },
+    { icon:'globe',  c:'c2', title:'Peered at NAPAfrica',
+      body:'Traffic to Telkom, Vodacom, MTN, Rain and Afrihost subscribers stays inside South Africa — no trip to Europe and back on every request.' },
+    { icon:'shield', c:'c3', title:'Security that is on by default',
+      body:'Free Let\'s Encrypt SSL, Imunify360 malware scanning, WAF rules, brute-force protection and nightly off-site backups on every single plan.' },
+    { icon:'life',   c:'',   title:'Support by engineers, not scripts',
+      body:'Tickets go straight to people who can read a log file. Median first response is under 12 minutes during SA business hours.' },
+    { icon:'move',   c:'c2', title:'Free, scheduled migrations',
+      body:'We move sites, databases and mailboxes from any host, test on staging, then cut DNS over at a time that suits your traffic.' },
+    { icon:'rand',   c:'c3', title:'Rand pricing, no renewal shock',
+      body:'You renew at the price you signed up at. No dollar-linked billing surprises when the exchange rate moves against you.' }
+  ],
+  domainFeatures: [
+    { icon:'globe', c:'',   title:'Free DNS management', body:'Full record control with instant propagation from our anycast DNS, including CAA, SRV and DNSSEC support.' },
+    { icon:'shield',c:'c2', title:'Theft protection', body:'Registrar lock, WHOIS privacy where the registry allows it, and two-factor on every transfer request.' },
+    { icon:'bolt',  c:'c3', title:'Auto-renew you control', body:'Renewal reminders 60, 30 and 7 days out, and a one-switch auto-renew toggle per domain — never lose a name again.' }
+  ],
+  wpFeatures: [
+    { icon:'bolt',  c:'',   title:'One-click installs & staging', body:'Spin up WordPress, clone it to staging, test your changes, and push back to live without touching a database.' },
+    { icon:'shield',c:'c2', title:'Safe automatic updates', body:'We update core and plugins, screenshot key pages before and after, and roll back automatically if anything shifts.' },
+    { icon:'life',  c:'c3', title:'WordPress-literate support', body:'Our engineers debug themes, plugins and WooCommerce checkouts — not just the server underneath them.' }
+  ],
+  cloudFeatures: [
+    { icon:'bolt',  c:'',   title:'Provisioned in 60 seconds', body:'KVM instances with dedicated vCPU and NVMe, deployed from the client area in about a minute.' },
+    { icon:'shield',c:'c2', title:'Snapshots and rollback', body:'Hourly snapshots retained for seven days, plus manual restore points before you ship anything risky.' },
+    { icon:'life',  c:'c3', title:'Managed if you want it', body:'Add fully managed patching, monitoring and backups, or keep root and run it entirely yourself.' }
+  ],
+  hostingFeatures: [
+    { icon:'bolt',  c:'',   title:'Resource isolation', body:'CloudLinux LVE limits mean your CPU, RAM and I/O are yours alone — the classic shared-hosting complaint, solved.' },
+    { icon:'globe', c:'c2', title:'cPanel you already know', body:'The control panel your developer expects, with softaculous one-click installs for 400+ applications.' },
+    { icon:'shield',c:'c3', title:'Backups you can self-restore', body:'Daily off-site backups kept for 30 days, restorable to a point in time from your own dashboard.' },
+    { icon:'life',  c:'',   title:'Email that lands', body:'Unlimited mailboxes with SPF, DKIM and DMARC configured for you, on IPs we keep off blocklists.' },
+    { icon:'move',  c:'c2', title:'Staging on every plan', body:'Clone your live site to a staging URL, break things safely, then publish when it works.' },
+    { icon:'rand',  c:'c3', title:'Upgrade without downtime', body:'Move between plans instantly from the client area — pro-rated, with no migration and no interruption.' }
+  ],
+  compare: [
+    ['Websites','1','5','20','Unlimited'],
+    ['NVMe storage','10 GB','40 GB','100 GB','250 GB'],
+    ['Local traffic','25 GB','Unmetered','Unmetered','Unmetered'],
+    ['Mailboxes','10','Unlimited','Unlimited','Unlimited'],
+    ['Free SSL','✓','✓','✓','✓'],
+    ['Daily off-site backups','7 days','30 days','30 days','30 days'],
+    ['Staging environment','—','✓','✓','✓'],
+    ['Free .co.za domain','✓','✓','✓','✓'],
+    ['Priority support','—','—','✓','✓'],
+    ['White-label cPanel','—','—','—','✓']
+  ],
+  quotes: [
+    { text:'We moved six client sites over on a Sunday night and not one of them noticed on Monday. The migration team did the DNS cutover with us on a call.', who:'Naledi M.', role:'Director, studio in Rosebank', initials:'NM' },
+    { text:'Our checkout used to time out on month-end. Since the move to Hostdigi we have not had a single failed order from a server timeout.', who:'Riaan v.d. Berg', role:'Owner, online outdoor store', initials:'RB' },
+    { text:'I am not technical. I emailed at 19:00 on a Friday expecting Monday, and had a working site back in twenty minutes.', who:'Thandeka S.', role:'Founder, consultancy in Durban', initials:'TS' }
+  ],
+  faq: [
+    { q:'Where exactly are my files hosted?', a:'In Teraco data centres in Johannesburg and Cape Town, peered directly at NAPAfrica. You pick your region at sign-up and can move between them later at no cost.' },
+    { q:'Is the migration really free?', a:'Yes — for any number of sites, from any host, with no time limit attached to the offer. Our engineers do the work, test on staging, and schedule the DNS cutover with you.' },
+    { q:'Do you charge setup fees or lock me into a contract?', a:'No setup fees and no fixed-term contract on shared, WordPress or reseller plans. Month-to-month billing is available on everything, and annual billing simply gives you two months free.' },
+    { q:'What happens if I outgrow my plan?', a:'You upgrade from the client area and it takes effect immediately, pro-rated. No migration, no downtime, no support ticket needed.' },
+    { q:'Can I get a refund if it is not for me?', a:'Every hosting plan carries a 30-day money-back guarantee. Domains are excluded, because registry fees are non-refundable once a name is registered.' },
+    { q:'Do you support POPIA requirements?', a:'Your data stays in South Africa unless you explicitly choose otherwise, and we sign an operator agreement on request. Our privacy policy sets out retention and breach-notification commitments.' }
+  ],
+  billingFaq: [
+    { q:'Which payment methods do you accept?', a:'Card (Visa and Mastercard), instant EFT via PayFast and Ozow, debit order, and manual EFT for annual invoices.' },
+    { q:'Are prices VAT inclusive?', a:'Prices shown exclude VAT. VAT at the prevailing rate is added at checkout for South African customers, and a tax invoice is issued automatically.' },
+    { q:'Will my renewal price go up?', a:'Not as a tactic. We do not use discounted first terms that jump at renewal — your renewal is the same price you signed up at, barring a general price change we announce in advance.' },
+    { q:'Can I pay annually and cancel mid-term?', a:'Yes. Cancel within the first 30 days for a full refund, or later for a pro-rated credit against any other Hostdigi service.' }
+  ]
+};
+
+/* ==========================================================================
+   ICONS
+   ========================================================================== */
+const ICONS = {
+  bolt:'<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c4.5 6 4.5 12 0 18-4.5-6-4.5-12 0-18"/>',
+  shield:'<path d="M12 3 5 6v6c0 4.4 3 8.2 7 9 4-.8 7-4.6 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+  life:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="m9 9-3.2-3.2M15 9l3.2-3.2M9 15l-3.2 3.2M15 15l3.2 3.2"/>',
+  move:'<path d="M4 17V7a2 2 0 0 1 2-2h7"/><path d="m11 3 3 2-3 2"/><path d="M20 7v10a2 2 0 0 1-2 2h-7"/><path d="m13 21-3-2 3-2"/>',
+  rand:'<circle cx="12" cy="12" r="9"/><path d="M9 16V8h3a2.5 2.5 0 0 1 0 5H9m3 0 3 3"/>'
+};
+const icon = (n) => `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]||ICONS.bolt}</svg>`;
+const check = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9 17.5 20 6.5"/></svg>';
+const money = (n) => DATA.currency + Number(n).toLocaleString('en-ZA');
+
+/* ==========================================================================
+   RENDERING
+   ========================================================================== */
+let annual = true;
+let planType = 'shared';
+
+function priceFor(plan){
+  if(annual){
+    const yearly = plan.annual != null ? plan.annual : plan.month * 10;
+    return { amount: Math.round(yearly / 12), note: `${money(yearly)} billed yearly · saves ${money(plan.month*12 - yearly)}` };
+  }
+  return { amount: plan.month, note: 'Billed monthly · cancel any time' };
+}
+
+function planCard(plan){
+  const p = priceFor(plan);
+  return `<article class="plan${plan.featured ? ' featured' : ''}">
+    ${plan.featured ? '<span class="plan-flag">Most popular</span>' : ''}
+    <div>
+      <h3>${plan.name}</h3>
+      <p class="blurb">${plan.blurb}</p>
+    </div>
+    <div class="price"><span class="cur">${DATA.currency}</span><span class="amt">${p.amount.toLocaleString('en-ZA')}</span><span class="per">/month</span></div>
+    <p class="price-note">${p.note}</p>
+    <ul>${plan.features.map(f => `<li>${check}<span>${f}</span></li>`).join('')}</ul>
+    <a class="btn ${plan.featured ? 'btn-primary' : 'btn-ghost'}" href="#/support">Choose ${plan.name}</a>
+  </article>`;
+}
+
+function renderPlans(){
+  const html = DATA.plans[planType].map(planCard).join('');
+  ['planGrid','planGrid2'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = html; });
+  document.querySelectorAll('.switch').forEach(s => s.setAttribute('aria-checked', String(annual)));
+  document.querySelectorAll('[role="tab"]').forEach(t => t.setAttribute('aria-selected', String(t.dataset.type === planType)));
+}
+
+function renderTabs(){
+  const html = DATA.planTabs.map(t =>
+    `<button class="tab" role="tab" data-type="${t.id}" aria-selected="${t.id === planType}">${t.label}</button>`).join('');
+  ['planTabs','planTabs2'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = html; });
+  document.querySelectorAll('[role="tab"]').forEach(tab => {
+    tab.addEventListener('click', () => { planType = tab.dataset.type; renderTabs(); renderPlans(); });
+  });
+}
+
+function featCards(list){
+  return list.map(f => `<article class="card feat ${f.c}">
+    <div class="feat-ico">${icon(f.icon)}</div>
+    <h3>${f.title}</h3>
+    <p>${f.body}</p>
+  </article>`).join('');
+}
+
+function render(){
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // trust strip
+  document.getElementById('stripRow').innerHTML = DATA.strip.map(s =>
+    `<div class="strip-item"><span><b>${s.big}</b>${s.small}</span></div>`).join('');
+
+  // tld chips (top 6)
+  document.getElementById('tldChips').innerHTML = DATA.tlds.slice(0,6).map(t =>
+    `<span class="tld-chip"><b>${t.tld}</b><i>from ${money(t.reg)}/yr</i></span>`).join('');
+
+  // feature grids
+  document.getElementById('featGrid').innerHTML     = featCards(DATA.features);
+  document.getElementById('hostingFeat').innerHTML  = featCards(DATA.hostingFeatures);
+  document.getElementById('domainFeat').innerHTML   = featCards(DATA.domainFeatures);
+  document.getElementById('wpFeat').innerHTML       = featCards(DATA.wpFeatures);
+  document.getElementById('cloudFeat').innerHTML    = featCards(DATA.cloudFeatures);
+
+  // vps
+  document.getElementById('vpsGrid').innerHTML = DATA.vps.map(planCard).join('');
+
+  // tld table
+  document.getElementById('tldBody').innerHTML = DATA.tlds.map(t =>
+    `<tr><td class="tld">${t.tld}${t.popular ? '<span class="tag-pop">Popular</span>' : ''}</td>
+     <td class="num">${money(t.reg)}<span style="color:var(--muted)">/yr</span></td>
+     <td class="num">${money(t.transfer)}</td><td class="num">${money(t.renew)}</td></tr>`).join('');
+
+  // comparison table
+  document.getElementById('compareBody').innerHTML = DATA.compare.map(r =>
+    `<tr><td style="color:var(--heading);font-weight:600">${r[0]}</td>${r.slice(1).map(c => `<td class="num">${c}</td>`).join('')}</tr>`).join('');
+
+  // quotes
+  document.getElementById('quoteGrid').innerHTML = DATA.quotes.map(q =>
+    `<article class="card quote">
+      <div class="stars" aria-label="5 out of 5">${'<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 2.9 6.3 6.8.8-5 4.6 1.3 6.8L12 17.2 5.9 20.5 7.2 13.7l-5-4.6 6.8-.8L12 2Z"/></svg>'.repeat(5)}</div>
+      <p>“${q.text}”</p>
+      <div class="who"><span class="avatar">${q.initials}</span><span><b>${q.who}</b><span>${q.role}</span></span></div>
+    </article>`).join('');
+
+  // faqs
+  const faqHtml = list => list.map(f =>
+    `<div class="q"><button type="button" aria-expanded="false"><span>${f.q}</span>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+     </button><div class="a"><p>${f.a}</p></div></div>`).join('');
+  document.getElementById('faqList').innerHTML  = faqHtml(DATA.faq);
+  document.getElementById('faqList2').innerHTML = faqHtml(DATA.billingFaq);
+
+  document.querySelectorAll('.q button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = btn.parentElement, open = q.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+
+  renderTabs();
+  renderPlans();
+}
+
+/* ==========================================================================
+   DOMAIN SEARCH (demo — swap for a WHMCS domainchecker call)
+   ========================================================================== */
+function slugify(v){
+  return v.trim().toLowerCase().replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0].replace(/[^a-z0-9-]/g,'');
+}
+/* Deterministic pseudo-availability so results feel stable between searches. */
+function looksTaken(name, tld){
+  let h = 0; const s = name + tld;
+  for(let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return (h % 10) < 3;
+}
+function searchDomains(raw, target){
+  const box = document.getElementById(target);
+  const typed = raw.trim();
+  const base = slugify(typed.includes('.') ? typed.split('.')[0] : typed);
+  if(!base){
+    box.innerHTML = `<div class="dresult"><span class="name">Type a name to check availability</span></div>`;
+    return;
+  }
+  const exact = typed.includes('.') ? '.' + typed.split('.').slice(1).join('.').toLowerCase() : '.co.za';
+  const order = [exact, ...DATA.tlds.map(t => t.tld).filter(t => t !== exact)].slice(0, 6);
+  box.innerHTML = order.map(tld => {
+    const meta = DATA.tlds.find(t => t.tld === tld) || { tld, reg: 249 };
+    const taken = looksTaken(base, tld);
+    return `<div class="dresult ${taken ? 'taken' : 'ok'}">
+      <span class="name">${base}${tld}</span>
+      <span class="status">${taken ? 'Taken' : 'Available'}</span>
+      <span class="price">${money(meta.reg)}<span style="color:var(--muted);font-weight:400">/yr</span></span>
+      <a class="btn ${taken ? 'btn-ghost' : 'btn-primary'} btn-sm" href="#/support">${taken ? 'WHOIS' : 'Add to cart'}</a>
+    </div>`;
+  }).join('');
+  box.insertAdjacentHTML('beforeend',
+    `<p class="form-note" style="margin-top:6px">Demo results only — connect this field to your WHMCS <span class="mono">domainchecker.php</span> endpoint for live registry lookups.</p>`);
+}
+[['domainForm','domainInput','domainResults'],['domainForm2','domainInput2','domainResults2']].forEach(([f,i,r]) => {
+  const form = document.getElementById(f);
+  if(form) form.addEventListener('submit', e => { e.preventDefault(); searchDomains(document.getElementById(i).value, r); });
+});
+
+/* ==========================================================================
+   ROUTING
+   ========================================================================== */
+const PAGES = ['home','hosting','domains','wordpress','cloud','pricing','support'];
+function routeName(){
+  const h = location.hash.replace(/^#\/?/, '').split('?')[0];
+  return PAGES.includes(h) ? h : 'home';
+}
+function go(page, scroll = true){
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('is-active', p.id === 'page-' + page));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.page === page));
+  document.title = page === 'home'
+    ? 'Hostdigi — Reliable Hosting, Seamless Domains | South African Web Hosting'
+    : `${page.charAt(0).toUpperCase() + page.slice(1)} — Hostdigi`;
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('burger').setAttribute('aria-expanded','false');
+  if(scroll) window.scrollTo({ top: 0, behavior: 'instant' in window ? 'auto' : 'auto' });
+  if(page === 'home') countUp();
+}
+window.addEventListener('hashchange', () => go(routeName()));
+
+/* ==========================================================================
+   CHROME: theme, menu, sticky nav, counters
+   ========================================================================== */
+const themeBtn = document.getElementById('themeBtn');
+const saved = (() => { try { return localStorage.getItem('hostdigi-theme'); } catch(e){ return null; } })();
+if(saved) document.documentElement.setAttribute('data-theme', saved);
+themeBtn.addEventListener('click', () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('hostdigi-theme', next); } catch(e){}
+});
+
+const burger = document.getElementById('burger');
+burger.addEventListener('click', () => {
+  const menu = document.getElementById('mobileMenu');
+  const open = menu.classList.toggle('open');
+  burger.setAttribute('aria-expanded', String(open));
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.getElementById('mobileMenu').classList.remove('open');
+});
+
+const navOuter = document.getElementById('navOuter');
+addEventListener('scroll', () => navOuter.classList.toggle('stuck', scrollY > 12), { passive:true });
+
+function countUp(){
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseFloat(el.dataset.count), dec = parseInt(el.dataset.dec || '0', 10);
+    const suffix = el.querySelector('small') ? el.querySelector('small').outerHTML : '';
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+      el.innerHTML = target.toLocaleString('en-ZA', { minimumFractionDigits: dec }) + suffix;
+      return;
+    }
+    const start = performance.now(), dur = 1100;
+    (function step(now){
+      const t = Math.min(1, (now - start) / dur), eased = 1 - Math.pow(1 - t, 3);
+      el.innerHTML = (target * eased).toLocaleString('en-ZA', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suffix;
+      if(t < 1) requestAnimationFrame(step);
+    })(performance.now());
+  });
+}
+
+document.querySelectorAll('.switch').forEach(sw => sw.addEventListener('click', () => { annual = !annual; renderPlans(); }));
+
+const contactForm = document.getElementById('contactForm');
+contactForm.addEventListener('submit', e => {
+  e.preventDefault();
+  if(!contactForm.reportValidity()) return;
+  contactForm.hidden = true;
+  document.getElementById('formOk').hidden = false;
+});
+
+/* reveal on scroll */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if(en.isIntersecting){ en.target.style.opacity = 1; en.target.style.transform = 'none'; io.unobserve(en.target); } });
+}, { threshold: .12 });
+function observeReveal(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.section-head, .card, .plan, .step, .q').forEach(el => {
+    el.style.opacity = 0; el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    io.observe(el);
+  });
+}
+
+render();
+go(routeName(), false);
+observeReveal();
+</script>
+</body>
+</html>
