@@ -42,7 +42,16 @@ const DATA = {
 > **The prices committed here are placeholders** benchmarked against the SA market.
 > Replace them with Hostdigi's real WHMCS product pricing before launch.
 
-## Wiring it to WHMCS
+## WHMCS child theme
+
+`whmcs-theme/` holds a **Twenty-One child theme** that puts this design inside WHMCS
+itself, so products, pricing, cart and client area come from your install with no API
+keys and no syncing. See [whmcs-theme/README.md](whmcs-theme/README.md) — that is the
+recommended way to run this site.
+
+The standalone `index.html` below remains useful as a landing page or design reference.
+
+## Wiring the standalone version to WHMCS
 
 | Element | Currently | To go live |
 |---|---|---|

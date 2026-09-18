@@ -1,0 +1,5 @@
+name: "Hostdigi"
+description: "Hostdigi (Pty) Ltd - reliable hosting, seamless domains"
+author: "Hostdigi (Pty) Ltd"
+config:
+  parent: twenty-one
