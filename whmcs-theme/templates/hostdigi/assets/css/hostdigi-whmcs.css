@@ -252,3 +252,16 @@ a:hover {
 :root[data-theme="light"] #header .nav-link:hover {
   color: #fff !important;
 }
+
+/* --- belt and braces for the parent theme's homepage hero ----------------
+   hostdigi.js hides it by finding the stray domain-search form, which works
+   regardless of markup. These id/class fallbacks cover the case where JS is
+   blocked, and are scoped to the homepage so they can never affect the real
+   domain checker page. A selector that matches nothing does nothing.      */
+body.hd-home #home-banner,
+body.hd-home .home-banner,
+body.hd-home #homepage-domain-search,
+body.hd-home .domain-search-container,
+body.hd-home .domainchecker-homepage {
+  display: none;
+}

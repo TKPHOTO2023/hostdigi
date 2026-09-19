@@ -1,0 +1,65 @@
+name: Deploy theme to WHMCS
+
+# Pushes the theme straight to the live server over FTPS whenever main changes.
+#
+# SETUP (once, by the repo owner - no credentials are ever shared with anyone):
+#   1. In cPanel, create a dedicated FTP account scoped as tightly as possible,
+#      e.g. directory /public_html. Do NOT reuse your main cPanel login.
+#   2. In GitHub: repo Settings > Secrets and variables > Actions > New
+#      repository secret. Add:
+#         FTP_SERVER    e.g. ftp.hostdigi.co.za
+#         FTP_USERNAME  the FTP account's username
+#         FTP_PASSWORD  the FTP account's password
+#   3. Push to main. The theme deploys automatically.
+#
+# Secrets are write-only: once saved, nobody can read them back out of GitHub,
+# including anyone who can see this file. Revoke access at any time by deleting
+# the FTP account in cPanel.
+#
+# If your host blocks FTPS, delete this workflow and use the cPanel Git Version
+# Control route in INSTALL-CPANEL.md instead.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'whmcs-theme/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:        # lets you trigger a deploy by hand from the Actions tab
+
+concurrency:
+  group: deploy-whmcs       # never let two deploys overlap on the server
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync theme files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./whmcs-theme/templates/hostdigi/
+          server-dir: public_html/templates/hostdigi/
+          dangerous-clean-slate: false
+
+      - name: Sync the hook
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./whmcs-theme/includes/hooks/
+          server-dir: public_html/includes/hooks/
+          dangerous-clean-slate: false
+
+      - name: Done
+        run: |
+          echo "Deployed. If styling looks stale, clear the WHMCS template cache:"
+          echo "Utilities > System > System Cleanup, or empty public_html/templates_c/"

@@ -15,26 +15,43 @@
   document.body.classList.add('hd-home');
 
   /* ------------------------------------------- hide the parent theme's hero
-     Twenty-One renders its own domain-search jumbotron above the homepage
-     content, so without this the page shows two domain searches - ours and
-     a captcha-guarded one. The markup for it differs between WHMCS versions,
-     so rather than guess a class name, find the stray domain-checker form
-     that is NOT inside our page and hide its section.
+     Twenty-One renders its own "Secure your domain name" block above the
+     homepage content, so without this the page shows two domain searches,
+     one of them captcha-guarded.
 
-     Deliberately conservative: it only ever hides an ancestor that still
-     sits above .hd-root in the document, and it walks up at most five
-     levels, so a surprising DOM can't lead to the whole page vanishing.   */
+     Matching on the form's action alone is not enough: with Friendly URLs
+     set to "Full Friendly Rewrite", the action becomes /domain/checker
+     rather than domainchecker.php, which is why an earlier action-only
+     match missed it. So we identify the block by what it contains - a
+     domain search field - and check several signals.
+
+     Deliberately conservative: only ever hides an ancestor that does NOT
+     contain our own content, walks up at most six levels, and stops at
+     body.                                                                */
   (function hideParentHero() {
-    var forms = document.querySelectorAll('form[action*="domainchecker"], form[action*="domain-checker"]');
-    Array.prototype.forEach.call(forms, function (form) {
-      if (root.contains(form)) return;                 // that's our own search
+    var candidates = document.querySelectorAll('form');
+
+    Array.prototype.forEach.call(candidates, function (form) {
+      if (root.contains(form)) return;                  // that's our own search
+
+      var action = (form.getAttribute('action') || '').toLowerCase();
+      var field = form.querySelector('input[type="text"], input[type="search"], input:not([type])');
+      var placeholder = field ? (field.getAttribute('placeholder') || '').toLowerCase() : '';
+      var name = field ? (field.getAttribute('name') || '').toLowerCase() : '';
+
+      var looksLikeDomainSearch =
+        action.indexOf('domainchecker') !== -1 ||
+        action.indexOf('domain/checker') !== -1 ||
+        (action.indexOf('domain') !== -1 && action.indexOf('cart') !== -1) ||
+        name === 'query' || name === 'domain' ||
+        placeholder.indexOf('example.com') !== -1;
+
+      if (!looksLikeDomainSearch) return;
 
       var node = form;
-      for (var i = 0; i < 5 && node && node.parentElement; i++) {
+      for (var i = 0; i < 6 && node && node.parentElement; i++) {
         node = node.parentElement;
-        // Stop climbing once we'd swallow our own content or the whole body.
         if (node === document.body || node.contains(root)) return;
-        // A section-level ancestor is the hero wrapper - hide it and stop.
         if (node.offsetHeight > 120) {
           node.setAttribute('data-hd-hidden', 'true');
           return;
