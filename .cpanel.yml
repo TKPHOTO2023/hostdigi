@@ -1,0 +1,30 @@
+---
+# cPanel Git Version Control deployment.
+#
+# With this file in the repo, cPanel can pull the theme straight onto your
+# server: Files > Git Version Control > Manage > Pull or Deploy > Deploy HEAD
+# Commit. Every future change I push then reaches your site by clicking
+# "Update from Remote", then "Deploy HEAD Commit" - no file copying.
+#
+# EDIT THE NEXT LINE: set WHMCSROOT to the folder containing your WHMCS
+# configuration.php. For WHMCS at the root of hostdigi.co.za this is usually
+#     /home/<your-cpanel-username>/public_html
+# Check it in cPanel > File Manager before your first deploy.
+---
+deployment:
+  tasks:
+    - export WHMCSROOT=/home/CPANELUSER/public_html
+
+    # Fail loudly rather than scattering files if the path is wrong.
+    - if [ ! -f "$WHMCSROOT/configuration.php" ]; then echo "ERROR: no WHMCS configuration.php in $WHMCSROOT - fix WHMCSROOT in .cpanel.yml"; exit 1; fi
+
+    - /bin/mkdir -p $WHMCSROOT/templates/hostdigi
+    - /bin/mkdir -p $WHMCSROOT/includes/hooks
+
+    - /bin/cp -R whmcs-theme/templates/hostdigi/. $WHMCSROOT/templates/hostdigi/
+    - /bin/cp whmcs-theme/includes/hooks/hostdigi_theme.php $WHMCSROOT/includes/hooks/hostdigi_theme.php
+
+    # WHMCS caches compiled templates; clearing it makes changes show up now.
+    - /bin/rm -rf $WHMCSROOT/templates_c/*
+
+    - echo "Hostdigi theme deployed to $WHMCSROOT"
