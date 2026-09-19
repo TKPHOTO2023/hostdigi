@@ -18,42 +18,77 @@ there, you're in the wrong folder — don't upload anything yet.
 
 ---
 
-## Route A — upload the ZIP (10 minutes, no git)
+## Route A — upload the theme (10 minutes, no git)
 
-1. Download `hostdigi-whmcs-theme.zip`.
-2. cPanel → **File Manager** → open the WHMCS root (see above).
-3. Click **Upload**, choose the ZIP, wait for 100%, then go back to the folder.
-4. Right-click the ZIP → **Extract** → extract into the WHMCS root.
+You need **two files**, and they go in **two different places**. This is the step that
+most often goes wrong, so the paths are spelled out exactly.
 
-   It contains `templates/hostdigi/` and `includes/hooks/hostdigi_theme.php`, so it
-   merges into the folders already there. It cannot overwrite Twenty-One or any other
-   theme — every file it writes is inside a `hostdigi` folder, except the one hook file,
-   which is new.
-5. Delete the ZIP once extracted.
-6. Open `includes/hooks/hostdigi_theme.php` (right-click → **Edit**) and check this line
-   matches your product group name exactly:
+### A1. The theme → `public_html/templates/`
 
-   ```php
-   const HOSTDIGI_PLAN_GROUPS = [
-       'Cloud Hosting' => 'Cloud Shared Hosting',
-   ];
-   ```
+1. cPanel → **File Manager** → open **`public_html/templates`**
+   (the folder that already contains `twenty-one`, `six`, `hostie`, `antler`).
+2. **Upload** `hostdigi-theme.zip` into that folder.
+3. Right-click it → **Extract** → extract into that same folder.
+4. You should now have **`public_html/templates/hostdigi`**, sitting beside `twenty-one`.
+   Inside it: `theme.yaml`, `homepage.tpl`, `assets/`.
+5. Delete the ZIP.
 
-   The name on the right must match **Configuration → Products/Services →
-   Products/Services**. Save.
-7. **Preview it** — in your browser, go to:
+> The ZIP contains exactly one folder — `hostdigi/` — so extracting it in the templates
+> folder produces `templates/hostdigi`, never `templates/templates`.
 
-   ```
-   https://hostdigi.co.za/index.php?systpl=hostdigi
-   ```
+### A2. The hook → `public_html/includes/hooks/`
 
-   This shows the new theme **to you only**. Real visitors still see the current site.
-   Click around the cart and client area while it's active.
-8. Happy? WHMCS admin → **Configuration → System Settings → General → Template →
-   Hostdigi** → Save.
+1. In File Manager, open **`public_html/includes/hooks`**
+   (**not** `templates/includes` — a different folder entirely).
+2. **Upload** `hostdigi_theme.php` there. No extracting; it's a plain PHP file.
+3. You should now have **`public_html/includes/hooks/hostdigi_theme.php`**.
 
-**To undo at any point:** switch the Template setting back to Twenty-One. Nothing in your
-billing data is touched at any stage.
+### A3. Check the product group name
+
+Right-click `hostdigi_theme.php` → **Edit**, and confirm this matches your group name
+under Configuration → Products/Services → Products/Services:
+
+```php
+const HOSTDIGI_PLAN_GROUPS = [
+    'Cloud Hosting' => 'Cloud Shared Hosting',
+];
+```
+
+Save.
+
+### A4. Preview before going live
+
+In your browser:
+
+```
+https://hostdigi.co.za/index.php?systpl=hostdigi
+```
+
+This shows the new theme **to you only** — real visitors still see the current site.
+Click through the cart and client area while it's active.
+
+### A5. Activate
+
+WHMCS admin → **Configuration → System Settings → General → Template → Hostdigi** → Save.
+
+**To undo at any point:** set Template back to your previous theme. No billing data is
+touched at any stage.
+
+---
+
+## If the Template dropdown lists odd names
+
+WHMCS treats **every folder inside `templates/`** as a theme. So if a zip is ever
+extracted in the wrong place, entries like **Templates**, **Includes** or **MACOSX**
+appear in the dropdown — and selecting one renders a blank page, because the folder
+isn't a theme.
+
+To clean that up:
+
+1. First, set **Template** back to a real theme (Twenty-One, Hostie, …) so the site works.
+2. In `public_html/templates`, delete the stray `templates/`, `includes/` and `__MACOSX/`
+   folders — after checking they contain only the misplaced files, nothing of yours.
+3. Re-do A1 and A2 above with the correct paths.
 
 ---
 
@@ -91,6 +126,8 @@ Commit**. Two clicks, no file copying.
 | Plans area shows "browse the store" | Group name doesn't match | Check the name in the hook against Configuration → Products/Services; the mismatch is logged in **Utilities → Logs → Activity Log** |
 | Plan bullets are one long line | Product description is a paragraph | Put each feature on its own line in the product description, or tell me and I'll parse commas too |
 | Preview URL shows the old theme | Theme dependencies failed validation | Confirm `templates/hostdigi/theme.yaml` uploaded, and that your WHMCS is 8.x with Twenty-One present |
+| Blank page, only "Powered by WHMCompleteSolution" | A non-theme folder is selected as the Template | Admin → Configuration → System Settings → General → Template → pick a real theme |
+| Dropdown lists Templates / Includes / MACOSX | A zip was extracted inside `templates/` | See "If the Template dropdown lists odd names" above |
 | 500 error after uploading the hook | PHP fatal in the hook file | Delete `includes/hooks/hostdigi_theme.php`; the site recovers immediately. Send me the error from **Utilities → Logs → Activity Log** |
 
 Screenshot whatever you see and send it — that's usually enough for me to pin the cause.
