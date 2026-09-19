@@ -31,15 +31,30 @@ use WHMCS\Database\Capsule;
 const HOSTDIGI_API_ADMIN = null;
 
 /**
- * Product group IDs to show on the homepage, in the order of the tabs.
- * Find these under Configuration > Products/Services > Products/Services -
- * the gid is in the URL when you edit a group.
+ * Which WHMCS product groups appear on the homepage, and what each tab is
+ * called.
+ *
+ *     'Tab label' => 'WHMCS product group name'   (or its numeric id)
+ *
+ * The group name is exactly as it appears under
+ * Configuration > Products/Services > Products/Services - matching is
+ * case-insensitive, so 'cloud shared hosting' works too. A numeric id is
+ * still accepted if you prefer to pin it.
+ *
+ * Tabs appear in the order listed here. One entry = no tab bar, just the
+ * plans.
  */
 const HOSTDIGI_PLAN_GROUPS = [
-    'shared'    => 1,   // <- set to your Web Hosting group id
-    'wordpress' => 2,   // <- set to your WordPress group id
-    'reseller'  => 3,   // <- set to your Reseller group id
+    'Cloud Hosting' => 'Cloud Shared Hosting',
+    // 'WordPress'  => 'WordPress Hosting',
+    // 'Reseller'   => 'Reseller Hosting',
 ];
+
+/**
+ * Products whose name contains any of these words get the "Most popular"
+ * flag. Case-insensitive. Set to [] to flag nothing.
+ */
+const HOSTDIGI_FEATURED_KEYWORDS = ['business', 'grow', 'plus'];
 
 /** TLDs to feature on the homepage, in display order. */
 const HOSTDIGI_FEATURED_TLDS = ['.co.za', '.africa', '.com', '.net', '.org', '.io'];
@@ -122,12 +137,49 @@ function hostdigi_price($amount)
     return preg_replace('/([.,])00$/', '', $formatted);
 }
 
+
+/**
+ * Resolve a configured product group to its numeric id.
+ *
+ * Accepts a numeric id unchanged, or looks a group up by name so the config
+ * above can read like the WHMCS admin area does.
+ *
+ * @return int|null The group id, or null when no such group exists.
+ */
+function hostdigi_group_id($group)
+{
+    if (is_numeric($group)) {
+        return (int) $group;
+    }
+
+    try {
+        $row = Capsule::table('tblproductgroups')
+            ->whereRaw('LOWER(name) = ?', [strtolower(trim($group))])
+            ->first();
+    } catch (\Exception $e) {
+        logActivity('Hostdigi theme: could not look up product group "' . $group . '" - ' . $e->getMessage());
+        return null;
+    }
+
+    if (!$row) {
+        logActivity('Hostdigi theme: no product group named "' . $group . '" - check HOSTDIGI_PLAN_GROUPS.');
+        return null;
+    }
+
+    return (int) $row->id;
+}
+
 /* ----------------------------------------------------------- homepage data */
 
 add_hook('ClientAreaPageHome', 1, function ($vars) {
     $groups = [];
 
-    foreach (HOSTDIGI_PLAN_GROUPS as $slug => $gid) {
+    foreach (HOSTDIGI_PLAN_GROUPS as $label => $group) {
+        $gid = hostdigi_group_id($group);
+        if ($gid === null) {
+            continue;
+        }
+
         $response = hostdigi_api('GetProducts', ['gid' => $gid]);
         $products = $response['products']['product'] ?? [];
 
@@ -152,13 +204,16 @@ add_hook('ClientAreaPageHome', 1, function ($vars) {
                 'annualPerMonth' => $annually >= 0 ? hostdigi_price($annually / 12) : null,
                 'features'     => hostdigi_features($product['description']),
                 'orderUrl'     => 'cart.php?a=add&pid=' . (int) $product['pid'],
-                'featured'     => stripos($product['name'], 'business') !== false
-                                  || stripos($product['name'], 'grow') !== false,
+                'featured'     => hostdigi_is_featured($product['name']),
             ];
         }
 
         if ($plans) {
-            $groups[$slug] = $plans;
+            $groups[] = [
+                'label' => $label,
+                'slug'  => preg_replace('/[^a-z0-9]+/', '-', strtolower($label)),
+                'plans' => $plans,
+            ];
         }
     }
 
@@ -167,6 +222,18 @@ add_hook('ClientAreaPageHome', 1, function ($vars) {
         'hdTlds'       => hostdigi_tld_pricing($vars),
     ];
 });
+
+
+/** Should this product carry the "Most popular" flag? */
+function hostdigi_is_featured($name)
+{
+    foreach (HOSTDIGI_FEATURED_KEYWORDS as $keyword) {
+        if (stripos($name, $keyword) !== false) {
+            return true;
+        }
+    }
+    return false;
+}
 
 /**
  * Turn a product description into feature bullets.

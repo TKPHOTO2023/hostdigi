@@ -27,9 +27,10 @@ WHMCS upgrades.
 
 1. Upload `templates/hostdigi/` to `/templates/hostdigi/` in your WHMCS root.
 2. Upload `includes/hooks/hostdigi_theme.php` to `/includes/hooks/`.
-3. Open the hook and set `HOSTDIGI_PLAN_GROUPS` to your real product group IDs
-   (Configuration → Products/Services → Products/Services; the `gid` is in the URL when
-   you edit a group).
+3. Open the hook and set `HOSTDIGI_PLAN_GROUPS` to your product groups, written as
+   `'Tab label' => 'WHMCS group name'`. The group name is what appears under
+   **Configuration → Products/Services → Products/Services** — matching is
+   case-insensitive, and a numeric group id is accepted too if you prefer to pin it.
 4. If your install does not have an Admin API Username configured, set
    `HOSTDIGI_API_ADMIN` in the hook to an admin username with API access.
 5. Activate: **Configuration → System Settings → General → Template → Hostdigi**.
@@ -61,8 +62,15 @@ six lines are shown.
 
 ### Which plan gets the "Most popular" flag
 
-Any product whose name contains "Business" or "Grow". Change that rule in the hook's
-`'featured' =>` line.
+Any product whose name contains one of `HOSTDIGI_FEATURED_KEYWORDS` (by default
+`business`, `grow`, `plus`). Set it to `[]` to flag nothing.
+
+### Product groups vs configurable options
+
+`HOSTDIGI_PLAN_GROUPS` means **product groups** — the groupings on
+Configuration → Products/Services → Products/Services that hold your plans. It has
+nothing to do with Configuration → Products/Services → **Configurable Options**, which
+is for per-order add-ons like extra disk or RAM.
 
 ## Verify these three things on your install
 
@@ -73,8 +81,9 @@ These depend on your specific setup and I could not test them against a live WHM
    `templates/twenty-one/homepage.tpl`, copy its `<form>` block over the one in
    `homepage.tpl`, and keep the `hd-dsearch-row` / `hd-dsearch-field` / `hd-btn` classes
    on the wrapper, input and button so the styling still applies.
-2. **Product group IDs** in `HOSTDIGI_PLAN_GROUPS` — wrong IDs mean empty plan tabs.
-   The template falls back to a "browse the store" link rather than breaking.
+2. **Group names** in `HOSTDIGI_PLAN_GROUPS` must match your WHMCS group names. A name
+   that doesn't match is skipped and logged to **Utilities → Logs → Activity Log**, and
+   if nothing matches the template shows a "browse the store" link rather than breaking.
 3. **The announcements block** uses `routePath('announcement-view', ...)`. If your install
    renders announcements differently, delete that section — it is self-contained.
 

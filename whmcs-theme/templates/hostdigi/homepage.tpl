@@ -6,9 +6,9 @@
     hard-coded prices here.
 
     Available from the hook:
-      $hdPlanGroups  array keyed by shared|wordpress|reseller, each a list of
-                     plans with name, description, monthly, annualPerMonth,
-                     features, orderUrl, featured
+      $hdPlanGroups  list of groups, each with label, slug and plans; every
+                     plan has name, description, monthly, annualPerMonth,
+                     annually, features, orderUrl, featured
       $hdTlds        list of tld, register, transfer, renew
 *}
 <div class="hd-root" data-theme="dark">
@@ -104,11 +104,10 @@
 
       {if $hdPlanGroups}
         <div class="hd-plan-toolbar">
-          <div class="hd-tabs" role="tablist" aria-label="Hosting type">
-            {foreach $hdPlanGroups as $slug => $plans}
-              <button class="hd-tab" role="tab" type="button" data-hd-type="{$slug}" aria-selected="{if $slug@first}true{else}false{/if}">
-                {if $slug eq 'shared'}Web hosting{elseif $slug eq 'wordpress'}WordPress{else}{$slug|capitalize}{/if}
-              </button>
+          {* One group needs no tab bar - the empty div keeps the toolbar layout. *}
+          <div class="hd-tabs" role="tablist" aria-label="Hosting type"{if $hdPlanGroups|count < 2} hidden{/if}>
+            {foreach $hdPlanGroups as $group}
+              <button class="hd-tab" role="tab" type="button" data-hd-type="{$group.slug}" aria-selected="{if $group@first}true{else}false{/if}">{$group.label|escape}</button>
             {/foreach}
           </div>
           <div class="hd-cycle">
@@ -118,9 +117,9 @@
           </div>
         </div>
 
-        {foreach $hdPlanGroups as $slug => $plans}
-          <div class="hd-plans" data-hd-panel="{$slug}"{if !$slug@first} hidden{/if}>
-            {foreach $plans as $plan}
+        {foreach $hdPlanGroups as $group}
+          <div class="hd-plans" data-hd-panel="{$group.slug}"{if !$group@first} hidden{/if}>
+            {foreach $group.plans as $plan}
               <article class="hd-plan{if $plan.featured} hd-featured{/if}">
                 {if $plan.featured}<span class="hd-plan-flag">Most popular</span>{/if}
                 <div>
