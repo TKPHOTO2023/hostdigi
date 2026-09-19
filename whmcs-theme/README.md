@@ -122,6 +122,19 @@ theme, which needs the parent's version as a starting point — copy
 `templates/twenty-one/header.tpl` into the repo and it can be done properly, along with
 restyling the navbar to match.
 
+## The skin layer
+
+`assets/css/hostdigi-whmcs.css` restyles WHMCS's own chrome — navbar, dropdowns,
+breadcrumb, footer, buttons, links, focus rings — without overriding a single `.tpl`
+file. It applies on every page, so the cart, client area and invoices pick up the brand
+too, and it cannot break any WHMCS markup because it changes none.
+
+The deliberate split: **chrome goes dark, interior content stays light.** A dark navbar
+and footer wrapping the dark homepage reads as one continuous design, while the pages
+people pay you on keep legible light surfaces. Taking those dark as well means restyling
+every table, modal and alert WHMCS ships — a much larger surface with real readability
+risk — and is better done as a full theme, not a skin.
+
 ## Styling notes
 
 Every class is prefixed `hd-` and every rule is scoped under `.hd-root`, and the custom

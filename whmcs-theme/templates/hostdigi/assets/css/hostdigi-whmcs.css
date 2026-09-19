@@ -56,3 +56,199 @@ body:has(.hd-root) .footer {
 .hd-root .hd-hero {
   padding-top: clamp(40px, 6vw, 72px);
 }
+
+/* ==========================================================================
+   BRANDED CHROME
+   --------------------------------------------------------------------------
+   Restyles WHMCS's own navbar, breadcrumb and footer to the Hostdigi palette
+   without overriding a single .tpl file. Twenty-One is built on Bootstrap 4,
+   so these are Bootstrap's standard component classes plus Twenty-One's ids.
+   Several selectors are deliberately a superset: one that matches nothing on
+   your WHMCS version simply does nothing.
+
+   Design decision: chrome goes dark, interior page content stays light.
+   A dark navbar + dark footer wrapping the dark homepage reads as one
+   continuous design, while the client area, cart and invoices keep their
+   light, legible surfaces. Making those dark too would mean restyling every
+   table, modal and alert WHMCS ships - a much larger surface with real
+   readability risk on pages people use to pay you.
+   ========================================================================== */
+
+/* --- top navbar ---------------------------------------------------------- */
+#header,
+#header .navbar,
+.navbar.navbar-light,
+#main-menu,
+#top-nav {
+  background: var(--hd-bg-2) !important;
+  border-bottom: 1px solid var(--hd-line);
+  box-shadow: none;
+}
+
+#header .navbar-brand,
+.navbar-brand,
+#header .logo,
+#header h1 {
+  color: #fff !important;
+  font-family: 'Sora', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+#header .nav-link,
+#main-menu .nav-link,
+.navbar-nav .nav-link,
+#header a {
+  color: var(--hd-muted) !important;
+  font-weight: 500;
+}
+
+#header .nav-link:hover,
+#main-menu .nav-link:hover,
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus,
+.navbar-nav .active > .nav-link {
+  color: #fff !important;
+}
+
+/* Dropdowns (Store, Account) */
+#header .dropdown-menu,
+.navbar .dropdown-menu {
+  background: var(--hd-bg-2);
+  border: 1px solid var(--hd-line-2);
+  border-radius: var(--hd-r-md);
+  box-shadow: var(--hd-shadow);
+}
+#header .dropdown-item,
+.navbar .dropdown-item {
+  color: var(--hd-muted);
+}
+#header .dropdown-item:hover,
+.navbar .dropdown-item:hover,
+#header .dropdown-item:focus,
+.navbar .dropdown-item:focus {
+  background: var(--hd-surface);
+  color: #fff;
+}
+
+/* Knowledgebase search box in the header */
+#header .form-control,
+#header input[type="text"],
+#header input[type="search"] {
+  background: var(--hd-surface);
+  border: 1px solid var(--hd-line);
+  color: var(--hd-text);
+}
+#header .form-control::placeholder {
+  color: var(--hd-muted);
+}
+#header .input-group-text,
+#header .btn-default {
+  background: var(--hd-surface);
+  border-color: var(--hd-line);
+  color: var(--hd-muted);
+}
+
+/* Cart badge */
+#header .badge,
+.navbar .badge,
+#cartItemCount {
+  background: var(--hd-violet) !important;
+  color: var(--hd-violet-ink) !important;
+}
+
+/* --- breadcrumb bar ------------------------------------------------------ */
+.breadcrumb,
+#breadcrumb,
+.breadcrumb-container {
+  background: var(--hd-bg) !important;
+  border: 0;
+  border-radius: 0;
+  margin-bottom: 0;
+}
+.breadcrumb a,
+.breadcrumb-item a {
+  color: var(--hd-violet);
+}
+.breadcrumb-item,
+.breadcrumb-item.active,
+.breadcrumb-item + .breadcrumb-item::before {
+  color: var(--hd-muted);
+}
+
+/* On the marketing homepage the breadcrumb ("Portal Home") is noise between
+   the navbar and the hero. The hd-home class is set by hostdigi.js. */
+body.hd-home .breadcrumb,
+body.hd-home #breadcrumb,
+body.hd-home .breadcrumb-container {
+  display: none;
+}
+
+/* --- footer -------------------------------------------------------------- */
+#footer,
+footer.footer,
+.footer {
+  background: var(--hd-bg-2) !important;
+  border-top: 1px solid var(--hd-line);
+  color: var(--hd-muted);
+}
+#footer a,
+.footer a {
+  color: var(--hd-muted);
+}
+#footer a:hover,
+.footer a:hover {
+  color: var(--hd-violet);
+}
+
+/* The "Powered by WHMCompleteSolution" strip sits on the page background. */
+body.hd-home,
+body.hd-home #main-body,
+body.hd-home .main-content {
+  background: var(--hd-bg) !important;
+}
+
+/* --- brand the interactive bits sitewide --------------------------------- */
+.btn-primary {
+  background: var(--hd-violet);
+  border-color: var(--hd-violet);
+  color: var(--hd-violet-ink);
+  font-weight: 600;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:not(:disabled):not(.disabled):active {
+  background: var(--hd-orchid);
+  border-color: var(--hd-orchid);
+  color: var(--hd-violet-ink);
+}
+a {
+  color: var(--hd-violet);
+}
+a:hover {
+  color: var(--hd-orchid);
+}
+.form-control:focus {
+  border-color: var(--hd-violet);
+  box-shadow: 0 0 0 .2rem color-mix(in srgb, var(--hd-violet) 25%, transparent);
+}
+
+/* Light-theme tokens for the chrome when a visitor picks light mode: the
+   navbar and footer stay brand-indigo rather than flipping to near-white,
+   which would lose the brand entirely at the top of every page. */
+:root[data-theme="light"] #header,
+:root[data-theme="light"] #header .navbar,
+:root[data-theme="light"] #main-menu,
+:root[data-theme="light"] #footer,
+:root[data-theme="light"] .footer {
+  background: var(--hd-brand-indigo) !important;
+}
+:root[data-theme="light"] #header .nav-link,
+:root[data-theme="light"] #footer a,
+:root[data-theme="light"] .footer a {
+  color: rgba(255, 255, 255, .78) !important;
+}
+:root[data-theme="light"] #header .navbar-brand,
+:root[data-theme="light"] #header .nav-link:hover {
+  color: #fff !important;
+}

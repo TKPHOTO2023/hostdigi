@@ -10,6 +10,10 @@
   var root = document.querySelector('.hd-root');
   if (!root) return;
 
+  // Marks the marketing homepage so the chrome CSS can treat it differently
+  // from the client area (hides the breadcrumb, carries the dark background).
+  document.body.classList.add('hd-home');
+
   /* ------------------------------------------- hide the parent theme's hero
      Twenty-One renders its own domain-search jumbotron above the homepage
      content, so without this the page shows two domain searches - ours and
