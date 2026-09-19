@@ -7,11 +7,15 @@ name: Deploy theme to WHMCS
 #      public_html (i.e. /home/<user>/public_html). Do NOT reuse your main
 #      cPanel login.
 #
-#      IMPORTANT: a cPanel FTP account is jailed to its Directory, so after
-#      login the paths below start FROM public_html. That is why server-dir
-#      reads "templates/hostdigi/" and not "public_html/templates/hostdigi/".
-#      If you instead use your MAIN cPanel login (which starts at /home/<user>),
-#      prefix both server-dir values with "public_html/".
+#      NOTE ON PATHS: cPanel decides an FTP account's login directory itself,
+#      and often appends the username or bases it on the wrong docroot - so do
+#      not assume it is public_html. The workflow therefore uses an ABSOLUTE
+#      path by default: /home/hostdigi/public_html/.
+#
+#      If your server jails FTP accounts to their login directory, that
+#      absolute path will fail. In that case set the repository VARIABLE
+#      FTP_ROOT (Settings > Secrets and variables > Actions > Variables tab)
+#      to "./" and make sure the account's directory really is public_html.
 #   2. In GitHub: repo Settings > Secrets and variables > Actions > New
 #      repository secret. Add:
 #         FTP_SERVER    e.g. ftp.hostdigi.co.za
@@ -58,8 +62,12 @@ jobs:
           protocol: ftps
           dry-run: ${{ inputs.dry_run == true }}
           local-dir: ./whmcs-theme/templates/hostdigi/
-          # Relative to the FTP account's login directory (public_html).
-          server-dir: templates/hostdigi/
+          # FTP_ROOT is a repository VARIABLE (Settings > Secrets and variables >
+          # Actions > Variables), not a secret - it is only a path.
+          # Default is the absolute path to the WHMCS root, which works when the
+          # FTP account is not jailed to its login directory. If your account IS
+          # jailed to public_html, set FTP_ROOT to an empty value or to "./".
+          server-dir: ${{ vars.FTP_ROOT || '/home/hostdigi/public_html/' }}templates/hostdigi/
           dangerous-clean-slate: false
 
       - name: Sync the hook
@@ -71,8 +79,7 @@ jobs:
           protocol: ftps
           dry-run: ${{ inputs.dry_run == true }}
           local-dir: ./whmcs-theme/includes/hooks/
-          # Relative to the FTP account's login directory (public_html).
-          server-dir: includes/hooks/
+          server-dir: ${{ vars.FTP_ROOT || '/home/hostdigi/public_html/' }}includes/hooks/
           dangerous-clean-slate: false
 
       - name: Done

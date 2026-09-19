@@ -49,7 +49,24 @@ fails loudly rather than scattering files.
    run it again with dry run off.
 4. From then on, every push deploys automatically.
 
-### The path gotcha
+### If the deploy fails on paths
+
+cPanel picks an FTP account's login directory itself — it may append the username, or
+base the path on a different docroot than you chose. Ours landed on
+`/home/hostdigi/hostdigi.co.za/github-user`, nowhere near WHMCS.
+
+So the workflow uses an **absolute** server path by default:
+`/home/hostdigi/public_html/`. That sidesteps the login directory entirely, as long as
+your server does not jail FTP accounts to their home folder.
+
+If it does jail them, the absolute path fails. Then: make sure the FTP account's
+directory really is `public_html`, and set a repository **variable** (not a secret)
+`FTP_ROOT` to `./` under Settings → Secrets and variables → Actions → **Variables**.
+
+`FTP_ROOT` is only a path, so a variable rather than a secret — you can see and change it
+without touching credentials.
+
+### The old path gotcha
 
 A cPanel FTP account is **jailed to its Directory**, so once logged in, the paths start
 *from* `public_html`. That's why the workflow says `server-dir: templates/hostdigi/` and
