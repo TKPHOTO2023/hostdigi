@@ -10,6 +10,35 @@
   var root = document.querySelector('.hd-root');
   if (!root) return;
 
+  /* ------------------------------------------- hide the parent theme's hero
+     Twenty-One renders its own domain-search jumbotron above the homepage
+     content, so without this the page shows two domain searches - ours and
+     a captcha-guarded one. The markup for it differs between WHMCS versions,
+     so rather than guess a class name, find the stray domain-checker form
+     that is NOT inside our page and hide its section.
+
+     Deliberately conservative: it only ever hides an ancestor that still
+     sits above .hd-root in the document, and it walks up at most five
+     levels, so a surprising DOM can't lead to the whole page vanishing.   */
+  (function hideParentHero() {
+    var forms = document.querySelectorAll('form[action*="domainchecker"], form[action*="domain-checker"]');
+    Array.prototype.forEach.call(forms, function (form) {
+      if (root.contains(form)) return;                 // that's our own search
+
+      var node = form;
+      for (var i = 0; i < 5 && node && node.parentElement; i++) {
+        node = node.parentElement;
+        // Stop climbing once we'd swallow our own content or the whole body.
+        if (node === document.body || node.contains(root)) return;
+        // A section-level ancestor is the hero wrapper - hide it and stop.
+        if (node.offsetHeight > 120) {
+          node.setAttribute('data-hd-hidden', 'true');
+          return;
+        }
+      }
+    });
+  })();
+
   /* ---------------------------------------------------------- colour theme */
   try {
     var saved = localStorage.getItem('hostdigi-theme');

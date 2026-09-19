@@ -101,6 +101,27 @@ editing the theme CSS by hand, so the standalone site and the WHMCS theme never 
 
 Logo assets for the theme live in `templates/hostdigi/assets/img/`.
 
+## Living inside Twenty-One's page shell
+
+`assets/css/hostdigi-whmcs.css` is the only hand-maintained stylesheet (the other is
+generated). It exists purely to reconcile the design with the parent theme:
+
+- **Full bleed.** Twenty-One wraps content in a centred max-width container, which left
+  the dark sections floating in a white box. `.hd-root` breaks out to viewport width
+  without needing to know the container's class name.
+- **Page background** follows the theme rather than staying white above and below.
+- **Twenty-One's own homepage hero** — the "Secure your domain name" jumbotron with a
+  captcha — is rendered from `header.tpl`, not `homepage.tpl`, so overriding the homepage
+  does not remove it and you get two domain searches. `hostdigi.js` finds the stray
+  domain-checker form that sits outside `.hd-root` and hides its section. It walks up at
+  most five levels and never hides an ancestor containing our own content, so an
+  unexpected DOM cannot blank the page.
+
+Hiding it in JS is a workaround. The clean fix is overriding `header.tpl` in this child
+theme, which needs the parent's version as a starting point — copy
+`templates/twenty-one/header.tpl` into the repo and it can be done properly, along with
+restyling the navbar to match.
+
 ## Styling notes
 
 Every class is prefixed `hd-` and every rule is scoped under `.hd-root`, and the custom

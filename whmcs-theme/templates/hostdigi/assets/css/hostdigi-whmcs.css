@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Hostdigi - WHMCS integration layer
+   --------------------------------------------------------------------------
+   Hand-maintained (unlike hostdigi.css, which is generated). Everything here
+   exists only because the design sits inside Twenty-One's page shell:
+   its centred .container, its white page background, and the default
+   homepage hero it renders above our content.
+   ========================================================================== */
+
+/* --- full bleed ----------------------------------------------------------
+   Twenty-One wraps page content in a centred, max-width container, which
+   left our dark sections floating in a white box. This breaks .hd-root out
+   to the full viewport width from wherever it happens to sit, without
+   needing to know the container's class. 100vw includes the scrollbar, so
+   the negative margin is calculated from the element's own centre.         */
+.hd-root {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: var(--hd-bg);
+  overflow-x: clip;
+}
+
+/* Kill the container's own padding where it would inset our sections. */
+.hd-root > * {
+  max-width: none;
+}
+
+/* --- page chrome ---------------------------------------------------------
+   The strip of page background visible above and below our content should
+   match the theme, not sit white against it.                              */
+body:has(.hd-root) {
+  background: var(--hd-bg);
+}
+
+/* Twenty-One's footer sits on its own light background; keep a clean seam
+   rather than a hard white edge against our dark sections. */
+body:has(.hd-root) #footer,
+body:has(.hd-root) .footer {
+  margin-top: 0;
+}
+
+/* --- hide Twenty-One's default homepage hero -----------------------------
+   Twenty-One renders its own "Secure your domain name" jumbotron, with a
+   captcha, from header.tpl on the homepage. Ours replaces it. The JS in
+   hostdigi.js finds that block and sets this attribute on it, because the
+   markup differs between WHMCS versions and a hard-coded class selector
+   would silently stop matching.                                           */
+[data-hd-hidden="true"] {
+  display: none !important;
+}
+
+/* --- spacing -------------------------------------------------------------
+   No double gap where our first section meets the WHMCS navbar.           */
+.hd-root .hd-hero {
+  padding-top: clamp(40px, 6vw, 72px);
+}

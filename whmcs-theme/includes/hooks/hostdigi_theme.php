@@ -51,10 +51,23 @@ const HOSTDIGI_PLAN_GROUPS = [
 ];
 
 /**
- * Products whose name contains any of these words get the "Most popular"
- * flag. Case-insensitive. Set to [] to flag nothing.
+ * The ONE product to flag "Most popular". Matched case-insensitively against
+ * the product name. Set to '' to flag nothing.
+ *
+ * Only the first match is flagged - two "most popular" badges defeat the
+ * purpose.
  */
-const HOSTDIGI_FEATURED_KEYWORDS = ['business', 'grow', 'plus'];
+const HOSTDIGI_FEATURED_PRODUCT = 'Business Cloud';
+
+/**
+ * Short brand name for headings and body copy. WHMCS's own company name is
+ * often the legal entity ("Hostdigi Pty Ltd"), which reads badly mid-sentence.
+ * Leave '' to fall back to the WHMCS company name.
+ */
+const HOSTDIGI_BRAND = 'Hostdigi';
+
+/** Sort plans cheapest-first rather than by WHMCS's product order. */
+const HOSTDIGI_SORT_BY_PRICE = true;
 
 /** TLDs to feature on the homepage, in display order. */
 const HOSTDIGI_FEATURED_TLDS = ['.co.za', '.africa', '.com', '.net', '.org', '.io'];
@@ -72,6 +85,7 @@ add_hook('ClientAreaHeadOutput', 1, function ($vars) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{$root}/templates/hostdigi/assets/css/hostdigi.css?v={$v}">
+<link rel="stylesheet" href="{$root}/templates/hostdigi/assets/css/hostdigi-whmcs.css?v={$v}">
 HTML;
 });
 
@@ -129,12 +143,24 @@ function hostdigi_api($action, array $params = [])
     return $result;
 }
 
-/** Format an amount using WHMCS's own currency formatting. */
-function hostdigi_price($amount)
+/**
+ * Format an amount for the pricing cards.
+ *
+ * formatCurrency() returns the full "R50.00 ZAR" form - prefix, decimals and
+ * the currency code. On a pricing card that is noise, so this uses the active
+ * currency's prefix only and drops .00 on whole amounts. The currency code is
+ * stated once, under the cards.
+ */
+function hostdigi_price($amount, $currency = null)
 {
-    $formatted = formatCurrency((float) $amount);
-    // formatCurrency() returns e.g. "R129.00" - drop trailing .00 for display.
-    return preg_replace('/([.,])00$/', '', $formatted);
+    $amount = (float) $amount;
+    $prefix = $currency && isset($currency->prefix) ? $currency->prefix : 'R';
+
+    $formatted = $amount == (int) $amount
+        ? number_format($amount, 0, '.', ' ')
+        : number_format($amount, 2, '.', ' ');
+
+    return $prefix . $formatted;
 }
 
 
@@ -173,6 +199,8 @@ function hostdigi_group_id($group)
 
 add_hook('ClientAreaPageHome', 1, function ($vars) {
     $groups = [];
+    $currency = $vars['activeCurrency'] ?? null;
+    $featuredTaken = false;
 
     foreach (HOSTDIGI_PLAN_GROUPS as $label => $group) {
         $gid = hostdigi_group_id($group);
@@ -199,13 +227,31 @@ add_hook('ClientAreaPageHome', 1, function ($vars) {
                 'pid'          => (int) $product['pid'],
                 'name'         => $product['name'],
                 'description'  => $product['description'],
-                'monthly'      => $monthly >= 0 ? hostdigi_price($monthly) : null,
-                'annually'     => $annually >= 0 ? hostdigi_price($annually) : null,
-                'annualPerMonth' => $annually >= 0 ? hostdigi_price($annually / 12) : null,
+                'monthly'      => $monthly >= 0 ? hostdigi_price($monthly, $currency) : null,
+                'annually'     => $annually >= 0 ? hostdigi_price($annually, $currency) : null,
+                'annualPerMonth' => $annually >= 0 ? hostdigi_price($annually / 12, $currency) : null,
+                'sort'         => $monthly >= 0 ? $monthly : ($annually >= 0 ? $annually / 12 : PHP_INT_MAX),
                 'features'     => hostdigi_features($product['description']),
                 'orderUrl'     => 'cart.php?a=add&pid=' . (int) $product['pid'],
-                'featured'     => hostdigi_is_featured($product['name']),
+                'featured'     => false,
             ];
+        }
+
+        if (HOSTDIGI_SORT_BY_PRICE) {
+            usort($plans, function ($a, $b) {
+                return $a['sort'] <=> $b['sort'];
+            });
+        }
+
+        // Flag at most one plan across all groups.
+        if (!$featuredTaken && HOSTDIGI_FEATURED_PRODUCT !== '') {
+            foreach ($plans as $i => $plan) {
+                if (stripos($plan['name'], HOSTDIGI_FEATURED_PRODUCT) !== false) {
+                    $plans[$i]['featured'] = true;
+                    $featuredTaken = true;
+                    break;
+                }
+            }
         }
 
         if ($plans) {
@@ -220,20 +266,10 @@ add_hook('ClientAreaPageHome', 1, function ($vars) {
     return [
         'hdPlanGroups' => $groups,
         'hdTlds'       => hostdigi_tld_pricing($vars),
+        'hdBrand'      => HOSTDIGI_BRAND !== '' ? HOSTDIGI_BRAND : ($vars['companyname'] ?? 'Hostdigi'),
     ];
 });
 
-
-/** Should this product carry the "Most popular" flag? */
-function hostdigi_is_featured($name)
-{
-    foreach (HOSTDIGI_FEATURED_KEYWORDS as $keyword) {
-        if (stripos($name, $keyword) !== false) {
-            return true;
-        }
-    }
-    return false;
-}
 
 /**
  * Turn a product description into feature bullets.
@@ -244,9 +280,23 @@ function hostdigi_is_featured($name)
  */
 function hostdigi_features($description)
 {
-    $lines = preg_split('/\r\n|\r|\n/', (string) $description);
-    $lines = array_values(array_filter(array_map('trim', $lines), 'strlen'));
-    return array_slice($lines, 0, 6);
+    $text = (string) $description;
+
+    // Product descriptions are written by hand and split their lines in
+    // whichever way the editor produced: real newlines, <br>, <br/>, <br />,
+    // or a mix. Normalise all of them to newlines first.
+    $text = preg_replace('/<br\s*\/?>/i', "\n", $text);
+    $text = preg_replace('/<\/(p|li|div)>/i', "\n", $text);
+    $text = strip_tags($text);
+    $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+
+    $lines = preg_split('/\r\n|\r|\n/', $text);
+    $lines = array_map(function ($line) {
+        return trim($line, " \t\n\r\0\x0B\xC2\xA0-*\u{2022}");
+    }, $lines);
+    $lines = array_values(array_filter($lines, 'strlen'));
+
+    return array_slice($lines, 0, 7);
 }
 
 /** Featured TLD pricing, straight from WHMCS's domain pricing table. */
@@ -280,11 +330,13 @@ function hostdigi_tld_pricing($vars)
             continue;
         }
 
+        $currency = $vars['activeCurrency'] ?? null;
+
         $out[] = [
             'tld'      => '.' . $key,
-            'register' => hostdigi_price($reg),
-            'transfer' => ($t = $first($transfer)) !== null ? hostdigi_price($t) : '-',
-            'renew'    => ($r = $first($renew)) !== null ? hostdigi_price($r) : '-',
+            'register' => hostdigi_price($reg, $currency),
+            'transfer' => ($t = $first($transfer)) !== null ? hostdigi_price($t, $currency) : '-',
+            'renew'    => ($r = $first($renew)) !== null ? hostdigi_price($r, $currency) : '-',
         ];
     }
 

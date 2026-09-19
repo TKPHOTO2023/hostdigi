@@ -20,7 +20,7 @@
       <div class="hd-hero-copy">
         <span class="hd-badge"><i class="hd-dot"></i> Hosted in South Africa &middot; JHB &amp; CPT</span>
         <h1>Reliable hosting.<br><span class="hd-accent">Seamless domains.</span></h1>
-        <p class="hd-lede">{$companyname} runs your website on NVMe servers peered locally at NAPAfrica &mdash; so pages load in milliseconds for the people who actually buy from you. Free SSL, free migration, and support that answers in minutes, not days.</p>
+        <p class="hd-lede">{$hdBrand} runs your website on NVMe servers peered locally at NAPAfrica &mdash; so pages load in milliseconds for the people who actually buy from you. Free SSL, free migration, and support that answers in minutes, not days.</p>
         <div class="hd-hero-cta">
           <a class="hd-btn hd-btn-primary" href="#plans">See hosting plans</a>
           <a class="hd-btn hd-btn-ghost" href="{$WEB_ROOT}/contact.php">Talk to a human</a>
@@ -33,7 +33,7 @@
       </div>
 
       <div class="hd-console">
-        <div class="hd-console-bar"><i></i><i></i><i></i><span class="hd-t">{$companyname|lower} &middot; status &middot; za-jhb-01</span></div>
+        <div class="hd-console-bar"><i></i><i></i><i></i><span class="hd-t">{$hdBrand|lower} &middot; status &middot; za-jhb-01</span></div>
         <div class="hd-console-body">
           <div class="hd-metric-row">
             <div class="hd-metric"><div class="hd-k">Uptime 30d</div><div class="hd-v">99.98<small>%</small></div></div>
@@ -160,7 +160,7 @@
   <section class="hd-section" style="background:var(--hd-bg-2);border-block:1px solid var(--hd-line)">
     <div class="hd-wrap">
       <div class="hd-section-head">
-        <span class="hd-eyebrow">Why {$companyname}</span>
+        <span class="hd-eyebrow">Why {$hdBrand}</span>
         <h2>Built for South African traffic first</h2>
         <p class="hd-lede">Most "cheap" hosting serves your site from Europe or the US. Every extra hop costs you a conversion. We keep the whole stack local.</p>
       </div>
@@ -202,7 +202,7 @@
   {if $announcements}
     <section class="hd-section" style="background:var(--hd-bg-2);border-block:1px solid var(--hd-line)">
       <div class="hd-wrap">
-        <div class="hd-section-head"><span class="hd-eyebrow">Latest</span><h2>News from {$companyname}</h2></div>
+        <div class="hd-section-head"><span class="hd-eyebrow">Latest</span><h2>News from {$hdBrand}</h2></div>
         <div class="hd-grid hd-g-3">
           {foreach $announcements as $announcement}
             <article class="hd-card">
