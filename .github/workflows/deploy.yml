@@ -3,8 +3,15 @@ name: Deploy theme to WHMCS
 # Pushes the theme straight to the live server over FTPS whenever main changes.
 #
 # SETUP (once, by the repo owner - no credentials are ever shared with anyone):
-#   1. In cPanel, create a dedicated FTP account scoped as tightly as possible,
-#      e.g. directory /public_html. Do NOT reuse your main cPanel login.
+#   1. In cPanel, create a dedicated FTP account with its Directory set to
+#      public_html (i.e. /home/<user>/public_html). Do NOT reuse your main
+#      cPanel login.
+#
+#      IMPORTANT: a cPanel FTP account is jailed to its Directory, so after
+#      login the paths below start FROM public_html. That is why server-dir
+#      reads "templates/hostdigi/" and not "public_html/templates/hostdigi/".
+#      If you instead use your MAIN cPanel login (which starts at /home/<user>),
+#      prefix both server-dir values with "public_html/".
 #   2. In GitHub: repo Settings > Secrets and variables > Actions > New
 #      repository secret. Add:
 #         FTP_SERVER    e.g. ftp.hostdigi.co.za
@@ -26,6 +33,11 @@ on:
       - 'whmcs-theme/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:        # lets you trigger a deploy by hand from the Actions tab
+    inputs:
+      dry_run:
+        description: 'List what would be transferred without writing anything'
+        type: boolean
+        default: false
 
 concurrency:
   group: deploy-whmcs       # never let two deploys overlap on the server
@@ -44,8 +56,10 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
+          dry-run: ${{ inputs.dry_run == true }}
           local-dir: ./whmcs-theme/templates/hostdigi/
-          server-dir: public_html/templates/hostdigi/
+          # Relative to the FTP account's login directory (public_html).
+          server-dir: templates/hostdigi/
           dangerous-clean-slate: false
 
       - name: Sync the hook
@@ -55,8 +69,10 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
+          dry-run: ${{ inputs.dry_run == true }}
           local-dir: ./whmcs-theme/includes/hooks/
-          server-dir: public_html/includes/hooks/
+          # Relative to the FTP account's login directory (public_html).
+          server-dir: includes/hooks/
           dangerous-clean-slate: false
 
       - name: Done

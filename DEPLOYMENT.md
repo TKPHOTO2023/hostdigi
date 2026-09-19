@@ -32,11 +32,33 @@ fails loudly rather than scattering files.
 
 `.github/workflows/deploy.yml` deploys on every push to `main`.
 
-1. In cPanel → **FTP Accounts**, create a **dedicated** account with its directory set to
-   `/public_html`. Don't reuse your main cPanel login.
+1. In cPanel → **FTP Accounts**, create a **dedicated** account with **Directory** set to
+   `public_html` (so the full path is `/home/hostdigi/public_html`). Don't reuse your main
+   cPanel login. Quota can be Unlimited — the theme is under 300 KB.
 2. In GitHub → repo **Settings → Secrets and variables → Actions**, add three secrets:
-   `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
-3. That's it. Every push deploys.
+
+   | Secret | Value |
+   |---|---|
+   | `FTP_SERVER` | `ftp.hostdigi.co.za` (or the server hostname cPanel shows under FTP Accounts → Configure FTP Client) |
+   | `FTP_USERNAME` | the **full** username, usually `something@hostdigi.co.za` |
+   | `FTP_PASSWORD` | the password you set |
+
+3. **Test before trusting it:** repo → **Actions** → *Deploy theme to WHMCS* → **Run
+   workflow**, tick **dry run**. It connects and lists what it *would* transfer without
+   writing anything. Check the log shows paths like `templates/hostdigi/theme.yaml`, then
+   run it again with dry run off.
+4. From then on, every push deploys automatically.
+
+### The path gotcha
+
+A cPanel FTP account is **jailed to its Directory**, so once logged in, the paths start
+*from* `public_html`. That's why the workflow says `server-dir: templates/hostdigi/` and
+not `public_html/templates/hostdigi/` — the latter would create
+`public_html/public_html/templates/hostdigi`, the same nesting that broke the first manual
+install.
+
+If you use your **main cPanel login** instead (which starts at `/home/hostdigi`), prefix
+both `server-dir` values with `public_html/`.
 
 **On safety:** GitHub secrets are write-only — once saved, nobody can read them back,
 including anyone who can see the workflow file or the repo. You revoke access instantly by
