@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hostdigi — Reliable Hosting, Seamless Domains | South African Web Hosting</title>
 <meta name="description" content="Fast NVMe web hosting, domains and WordPress hosting built for South Africa. Local Johannesburg and Cape Town infrastructure, free SSL, free migrations and real human support.">
-<meta name="theme-color" content="#050a12">
+<meta name="theme-color" content="#0a0722">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hostdigi — Reliable Hosting, Seamless Domains">
 <meta property="og:description" content="South African NVMe hosting, domains and WordPress. Local peering, free SSL, free migrations, 24/7 support.">
@@ -13,49 +13,55 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a12'/%3E%3Cpath d='M9 23V9h3.4v5.2h7.2V9H23v14h-3.4v-5.6h-7.2V23z' fill='%2329e2a6'/%3E%3C/svg%3E">
+<link rel="icon" href="assets/hostdigi-mark-512.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/hostdigi-mark-512.png">
 <style>
 /* ============================================================
    HOSTDIGI — design tokens
    ============================================================ */
 :root{
-  --bg:#050a12;
-  --bg-2:#08111d;
-  --surface:rgba(255,255,255,.04);
-  --surface-2:rgba(255,255,255,.07);
-  --line:rgba(255,255,255,.10);
-  --line-2:rgba(255,255,255,.18);
-  --text:#e8f0fa;
-  --muted:#93a7bd;
+  /* Brand palette sampled from the Hostdigi logo:
+     violet #9568f9 · orchid #b664f5 · periwinkle #6c95fb · indigo #5437cb */
+  --bg:#0a0722;
+  --bg-2:#120c33;
+  --surface:rgba(255,255,255,.05);
+  --surface-2:rgba(255,255,255,.08);
+  --line:rgba(167,139,250,.16);
+  --line-2:rgba(167,139,250,.30);
+  --text:#e7e3fb;
+  --muted:#a9a2d6;
   --heading:#ffffff;
-  --mint:#29e2a6;
-  --cyan:#35c1ff;
-  --sun:#ffb020;
-  --coral:#ff6b5e;
-  --mint-ink:#04241a;
-  --scrim:rgba(3,7,13,.72);
-  --shadow:0 24px 60px -24px rgba(0,0,0,.75);
-  --ring:var(--mint);
+  --violet:#a78bfa;
+  --periwinkle:#8fa9ff;
+  --orchid:#c77df7;
+  --rose:#ff7a9c;
+  --violet-ink:#12082e;
+  --brand-indigo:#5437cb;
+  --scrim:rgba(10,7,34,.78);
+  --shadow:0 24px 60px -24px rgba(8,4,32,.8);
+  --ring:var(--violet);
   --maxw:1220px;
   --r-sm:10px; --r-md:16px; --r-lg:24px; --r-xl:32px;
   color-scheme:dark;
 }
 :root[data-theme="light"]{
-  --bg:#f5f8fc;
+  --bg:#f7f5fe;
   --bg-2:#ffffff;
-  --surface:rgba(9,25,43,.04);
+  --surface:rgba(42,35,80,.045);
   --surface-2:#ffffff;
-  --line:rgba(9,25,43,.10);
-  --line-2:rgba(9,25,43,.18);
-  --text:#22384f;
-  --muted:#5b7389;
-  --heading:#08131f;
-  --mint:#059f76;
-  --cyan:#0a84c9;
-  --sun:#b2700a;
-  --mint-ink:#ffffff;
-  --scrim:rgba(255,255,255,.75);
-  --shadow:0 24px 60px -30px rgba(9,25,43,.28);
+  --line:rgba(42,35,80,.12);
+  --line-2:rgba(42,35,80,.22);
+  --text:#2a2350;
+  --muted:#615a8c;
+  --heading:#160f3d;
+  --violet:#5b32c9;
+  --periwinkle:#3a4fd0;
+  --orchid:#8a32c9;
+  --rose:#c42a54;
+  --violet-ink:#ffffff;
+  --brand-indigo:#5437cb;
+  --scrim:rgba(247,245,254,.82);
+  --shadow:0 24px 60px -30px rgba(42,35,80,.26);
   color-scheme:light;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -74,12 +80,12 @@ h3{font-size:clamp(1.1rem,1.8vw,1.35rem)}
 a{color:inherit;text-decoration:none}
 img,svg{display:block;max-width:100%}
 button,input,select{font:inherit;color:inherit}
-::selection{background:var(--mint);color:var(--mint-ink)}
+::selection{background:var(--violet);color:var(--violet-ink)}
 :focus-visible{outline:2px solid var(--ring);outline-offset:3px;border-radius:6px}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.skip{position:absolute;left:16px;top:-60px;z-index:400;background:var(--mint);color:var(--mint-ink);padding:10px 18px;border-radius:999px;font-weight:600;transition:top .2s}
+.skip{position:absolute;left:16px;top:-60px;z-index:400;background:var(--violet);color:var(--violet-ink);padding:10px 18px;border-radius:999px;font-weight:600;transition:top .2s}
 .skip:focus{top:16px}
 
 /* ---------- routing ---------- */
@@ -91,7 +97,7 @@ button,input,select{font:inherit;color:inherit}
 .eyebrow{
   display:inline-flex;align-items:center;gap:8px;
   font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--mint);
+  color:var(--violet);
 }
 .eyebrow::before{content:"";width:22px;height:2px;background:currentColor;border-radius:2px}
 .lede{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--muted);max-width:62ch}
@@ -102,16 +108,16 @@ button,input,select{font:inherit;color:inherit}
   transition:transform .18s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease;
 }
 .btn:hover{transform:translateY(-2px)}
-.btn-primary{background:var(--mint);color:var(--mint-ink);box-shadow:0 10px 30px -12px color-mix(in srgb,var(--mint) 80%,transparent)}
-.btn-primary:hover{box-shadow:0 16px 40px -14px color-mix(in srgb,var(--mint) 85%,transparent)}
+.btn-primary{background:var(--violet);color:var(--violet-ink);box-shadow:0 10px 30px -12px color-mix(in srgb,var(--violet) 80%,transparent)}
+.btn-primary:hover{box-shadow:0 16px 40px -14px color-mix(in srgb,var(--violet) 85%,transparent)}
 .btn-ghost{background:var(--surface);border-color:var(--line-2);color:var(--heading)}
-.btn-ghost:hover{border-color:var(--mint);color:var(--mint)}
+.btn-ghost:hover{border-color:var(--violet);color:var(--violet)}
 .btn-sm{padding:9px 18px;font-size:.87rem}
 .badge{
   display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;
   background:var(--surface);border:1px solid var(--line);font-size:.78rem;font-weight:600;color:var(--muted)
 }
-.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px color-mix(in srgb,var(--mint) 22%,transparent)}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--violet);box-shadow:0 0 0 4px color-mix(in srgb,var(--violet) 22%,transparent)}
 .card{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
   padding:28px;transition:border-color .25s ease,transform .25s ease,background .25s ease;
@@ -131,12 +137,11 @@ button,input,select{font:inherit;color:inherit}
 .nav{display:flex;align-items:center;gap:18px}
 .logo{display:flex;align-items:center;gap:10px;font-family:'Sora';font-weight:800;font-size:1.22rem;color:var(--heading);letter-spacing:-.03em}
 .logo-mark{
-  width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--mint),var(--cyan));color:var(--mint-ink);
-  font-weight:800;font-size:1rem;box-shadow:0 8px 22px -10px var(--mint)
+  width:34px;height:auto;flex:none;
+  filter:drop-shadow(0 6px 16px rgba(149,104,249,.45))
 }
 .logo b{font-weight:800;letter-spacing:-.03em}
-.logo b span{color:var(--mint)}
+.logo b span{color:var(--violet)}
 .nav-links{display:flex;align-items:center;gap:4px;margin-left:auto}
 .nav-links a{
   white-space:nowrap;
@@ -151,7 +156,7 @@ button,input,select{font:inherit;color:inherit}
   background:var(--surface);border:1px solid var(--line);cursor:pointer;color:var(--muted);
   transition:color .2s,border-color .2s
 }
-.icon-btn:hover{color:var(--mint);border-color:var(--mint)}
+.icon-btn:hover{color:var(--violet);border-color:var(--violet)}
 .burger{display:none}
 .mobile-menu{display:none;position:fixed;inset:0;z-index:190;background:var(--bg);padding:96px 24px 40px}
 .mobile-menu.open{display:block}
@@ -165,9 +170,9 @@ button,input,select{font:inherit;color:inherit}
 .hero-bg::before{
   content:"";position:absolute;inset:-30%;
   background:
-    radial-gradient(38% 42% at 18% 20%,color-mix(in srgb,var(--mint) 22%,transparent),transparent 70%),
-    radial-gradient(34% 38% at 82% 12%,color-mix(in srgb,var(--cyan) 20%,transparent),transparent 70%),
-    radial-gradient(40% 40% at 60% 88%,color-mix(in srgb,var(--sun) 12%,transparent),transparent 72%);
+    radial-gradient(38% 42% at 18% 20%,color-mix(in srgb,var(--violet) 22%,transparent),transparent 70%),
+    radial-gradient(34% 38% at 82% 12%,color-mix(in srgb,var(--periwinkle) 20%,transparent),transparent 70%),
+    radial-gradient(40% 40% at 60% 88%,color-mix(in srgb,var(--orchid) 12%,transparent),transparent 72%);
   filter:blur(24px);animation:drift 22s ease-in-out infinite alternate
 }
 .hero-bg::after{
@@ -182,13 +187,13 @@ button,input,select{font:inherit;color:inherit}
 .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:52px;align-items:center}
 .hero-copy{display:grid;gap:22px;justify-items:start}
 .hero h1 .accent{
-  background:linear-gradient(100deg,var(--mint),var(--cyan));
+  background:linear-gradient(100deg,var(--violet),var(--periwinkle));
   -webkit-background-clip:text;background-clip:text;color:transparent
 }
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px}
 .hero-proof{display:flex;flex-wrap:wrap;gap:10px 22px;color:var(--muted);font-size:.87rem}
 .hero-proof span{display:flex;align-items:center;gap:7px}
-.tick{width:16px;height:16px;flex:none;color:var(--mint)}
+.tick{width:16px;height:16px;flex:none;color:var(--violet)}
 
 /* ---------- domain search ---------- */
 .dsearch{
@@ -218,8 +223,8 @@ button,input,select{font:inherit;color:inherit}
 }
 .dresult .name{font-family:'JetBrains Mono';font-weight:700;color:var(--heading);word-break:break-all}
 .dresult .status{font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:999px}
-.dresult.ok .status{background:color-mix(in srgb,var(--mint) 18%,transparent);color:var(--mint)}
-.dresult.taken .status{background:color-mix(in srgb,var(--coral) 18%,transparent);color:var(--coral)}
+.dresult.ok .status{background:color-mix(in srgb,var(--violet) 18%,transparent);color:var(--violet)}
+.dresult.taken .status{background:color-mix(in srgb,var(--rose) 18%,transparent);color:var(--rose)}
 .dresult .price{margin-left:auto;font-family:'JetBrains Mono';font-weight:700;color:var(--heading);white-space:nowrap}
 .dresult .btn{margin-left:12px}
 .dresult.taken .price,.dresult.taken .btn{opacity:.55}
@@ -232,20 +237,20 @@ button,input,select{font:inherit;color:inherit}
 :root[data-theme="dark"] .console{background:#071019}
 .console-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--surface)}
 .console-bar i{width:10px;height:10px;border-radius:50%;background:var(--line-2)}
-.console-bar i:first-child{background:var(--coral)}
-.console-bar i:nth-child(2){background:var(--sun)}
-.console-bar i:nth-child(3){background:var(--mint)}
+.console-bar i:first-child{background:var(--rose)}
+.console-bar i:nth-child(2){background:var(--orchid)}
+.console-bar i:nth-child(3){background:var(--violet)}
 .console-bar .t{margin-left:8px;font-size:.78rem;color:var(--muted);font-family:'JetBrains Mono'}
 .console-body{padding:20px;display:grid;gap:16px}
 .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:14px}
 .metric .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 .metric .v{font-family:'JetBrains Mono';font-size:1.45rem;font-weight:700;color:var(--heading);margin-top:4px}
-.metric .v small{font-size:.8rem;color:var(--mint)}
+.metric .v small{font-size:.8rem;color:var(--violet)}
 .spark{width:100%;height:64px}
 .log{font-family:'JetBrains Mono';font-size:.78rem;display:grid;gap:6px;color:var(--muted)}
-.log b{color:var(--mint);font-weight:700}
-.log .warn{color:var(--sun)}
+.log b{color:var(--violet);font-weight:700}
+.log .warn{color:var(--orchid)}
 
 /* ---------- trust strip ---------- */
 .strip{border-block:1px solid var(--line);background:var(--surface);padding:22px 0}
@@ -260,7 +265,7 @@ button,input,select{font:inherit;color:inherit}
   padding:9px 18px;border-radius:999px;border:0;background:none;cursor:pointer;
   font-size:.9rem;font-weight:600;color:var(--muted);transition:.2s
 }
-.tab[aria-selected="true"]{background:var(--mint);color:var(--mint-ink)}
+.tab[aria-selected="true"]{background:var(--violet);color:var(--violet-ink)}
 .cycle{display:inline-flex;align-items:center;gap:12px;font-size:.9rem;color:var(--muted)}
 .switch{
   position:relative;width:54px;height:30px;border-radius:999px;border:1px solid var(--line);
@@ -270,9 +275,9 @@ button,input,select{font:inherit;color:inherit}
   content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
   background:var(--muted);transition:transform .22s ease,background .22s
 }
-.switch[aria-checked="true"]{border-color:var(--mint)}
-.switch[aria-checked="true"]::after{transform:translateX(24px);background:var(--mint)}
-.save-pill{background:color-mix(in srgb,var(--sun) 18%,transparent);color:var(--sun);padding:4px 11px;border-radius:999px;font-size:.78rem;font-weight:700}
+.switch[aria-checked="true"]{border-color:var(--violet)}
+.switch[aria-checked="true"]::after{transform:translateX(24px);background:var(--violet)}
+.save-pill{background:color-mix(in srgb,var(--orchid) 18%,transparent);color:var(--orchid);padding:4px 11px;border-radius:999px;font-size:.78rem;font-weight:700}
 
 .plans{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:start}
 .plan{
@@ -282,11 +287,11 @@ button,input,select{font:inherit;color:inherit}
 }
 .plan:hover{transform:translateY(-6px);border-color:var(--line-2)}
 .plan.featured{
-  border-color:var(--mint);background:var(--surface-2);box-shadow:0 30px 70px -40px var(--mint)
+  border-color:var(--violet);background:var(--surface-2);box-shadow:0 30px 70px -40px var(--violet)
 }
 :root[data-theme="dark"] .plan.featured{background:rgba(41,226,166,.06)}
 .plan-flag{
-  position:absolute;top:-12px;left:26px;background:var(--mint);color:var(--mint-ink);
+  position:absolute;top:-12px;left:26px;background:var(--violet);color:var(--violet-ink);
   font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:999px
 }
 .plan h3{font-size:1.15rem}
@@ -298,17 +303,17 @@ button,input,select{font:inherit;color:inherit}
 .price-note{font-size:.78rem;color:var(--muted);margin-top:-10px}
 .plan ul{list-style:none;display:grid;gap:10px;font-size:.89rem}
 .plan li{display:flex;gap:9px;align-items:flex-start}
-.plan li svg{flex:none;margin-top:3px;color:var(--mint)}
+.plan li svg{flex:none;margin-top:3px;color:var(--violet)}
 .plan .btn{width:100%;margin-top:auto}
 
 /* ---------- feature grid ---------- */
 .feat{display:grid;gap:14px}
 .feat-ico{
   width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
-  background:color-mix(in srgb,var(--mint) 14%,transparent);color:var(--mint)
+  background:color-mix(in srgb,var(--violet) 14%,transparent);color:var(--violet)
 }
-.feat.c2 .feat-ico{background:color-mix(in srgb,var(--cyan) 14%,transparent);color:var(--cyan)}
-.feat.c3 .feat-ico{background:color-mix(in srgb,var(--sun) 16%,transparent);color:var(--sun)}
+.feat.c2 .feat-ico{background:color-mix(in srgb,var(--periwinkle) 14%,transparent);color:var(--periwinkle)}
+.feat.c3 .feat-ico{background:color-mix(in srgb,var(--orchid) 16%,transparent);color:var(--orchid)}
 .feat p{font-size:.92rem;color:var(--muted)}
 
 /* ---------- bento ---------- */
@@ -316,9 +321,9 @@ button,input,select{font:inherit;color:inherit}
 .bento .card{display:grid;gap:14px;align-content:start}
 .bento .span-2{grid-column:span 2}
 .stat-big{font-family:'Sora';font-weight:800;font-size:clamp(2.4rem,5vw,3.6rem);color:var(--heading);line-height:1;letter-spacing:-.04em}
-.stat-big em{font-style:normal;color:var(--mint)}
+.stat-big em{font-style:normal;color:var(--violet)}
 .map{position:relative;border-radius:var(--r-md);overflow:hidden;background:var(--bg-2);border:1px solid var(--line);min-height:190px}
-.pin{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 color-mix(in srgb,var(--mint) 60%,transparent);animation:pulse 2.6s infinite}
+.pin{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--violet);box-shadow:0 0 0 0 color-mix(in srgb,var(--violet) 60%,transparent);animation:pulse 2.6s infinite}
 .pin span{position:absolute;left:18px;top:-6px;font-size:.74rem;color:var(--muted);white-space:nowrap;font-family:'JetBrains Mono'}
 @keyframes pulse{70%{box-shadow:0 0 0 16px transparent}100%{box-shadow:0 0 0 0 transparent}}
 
@@ -327,8 +332,8 @@ button,input,select{font:inherit;color:inherit}
 .step{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;padding:22px 24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
 .step::before{
   counter-increment:s;content:counter(s,decimal-leading-zero);
-  font-family:'JetBrains Mono';font-weight:700;font-size:1rem;color:var(--mint);
-  background:color-mix(in srgb,var(--mint) 12%,transparent);width:44px;height:44px;border-radius:14px;display:grid;place-items:center
+  font-family:'JetBrains Mono';font-weight:700;font-size:1rem;color:var(--violet);
+  background:color-mix(in srgb,var(--violet) 12%,transparent);width:44px;height:44px;border-radius:14px;display:grid;place-items:center
 }
 .step p{color:var(--muted);font-size:.92rem;margin-top:4px}
 
@@ -341,15 +346,15 @@ tbody tr:last-child td{border-bottom:0}
 tbody tr:hover{background:var(--surface)}
 td.tld{font-family:'JetBrains Mono';font-weight:700;color:var(--heading)}
 td.num{font-family:'JetBrains Mono';color:var(--heading)}
-.tag-pop{background:color-mix(in srgb,var(--mint) 16%,transparent);color:var(--mint);font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:999px;margin-left:8px}
+.tag-pop{background:color-mix(in srgb,var(--violet) 16%,transparent);color:var(--violet);font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:999px;margin-left:8px}
 
 /* ---------- quotes ---------- */
 .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .quote{display:grid;gap:16px;align-content:start}
 .quote p{font-size:.98rem;color:var(--text)}
-.stars{display:flex;gap:3px;color:var(--sun)}
+.stars{display:flex;gap:3px;color:var(--orchid)}
 .who{display:flex;align-items:center;gap:12px;margin-top:auto}
-.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:'Sora';font-weight:700;color:var(--mint-ink);background:linear-gradient(135deg,var(--mint),var(--cyan));font-size:.95rem}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:'Sora';font-weight:700;color:var(--violet-ink);background:linear-gradient(135deg,var(--violet),var(--periwinkle));font-size:.95rem}
 .who b{display:block;color:var(--heading);font-size:.9rem}
 .who span{font-size:.8rem;color:var(--muted)}
 
@@ -361,7 +366,7 @@ td.num{font-family:'JetBrains Mono';color:var(--heading)}
   padding:20px 24px;background:none;border:0;cursor:pointer;text-align:left;
   font-family:'Sora';font-weight:600;font-size:1rem;color:var(--heading)
 }
-.q button .chev{flex:none;transition:transform .25s ease;color:var(--mint)}
+.q button .chev{flex:none;transition:transform .25s ease;color:var(--violet)}
 .q[open] button .chev,.q.open button .chev{transform:rotate(180deg)}
 .q .a{max-height:0;overflow:hidden;transition:max-height .3s ease}
 .q.open .a{max-height:420px}
@@ -370,7 +375,7 @@ td.num{font-family:'JetBrains Mono';color:var(--heading)}
 /* ---------- cta band ---------- */
 .band{
   position:relative;overflow:hidden;border-radius:var(--r-xl);padding:clamp(38px,6vw,68px);
-  background:linear-gradient(120deg,color-mix(in srgb,var(--mint) 16%,var(--bg-2)),color-mix(in srgb,var(--cyan) 14%,var(--bg-2)));
+  background:linear-gradient(120deg,color-mix(in srgb,var(--violet) 16%,var(--bg-2)),color-mix(in srgb,var(--periwinkle) 14%,var(--bg-2)));
   border:1px solid var(--line-2);display:grid;gap:22px;justify-items:center;text-align:center
 }
 .band::after{
@@ -389,20 +394,20 @@ td.num{font-family:'JetBrains Mono';color:var(--heading)}
   padding:13px 15px;outline:0;transition:border-color .2s
 }
 :root[data-theme="dark"] .field input,:root[data-theme="dark"] .field textarea,:root[data-theme="dark"] .field select{background:rgba(255,255,255,.04)}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--mint)}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--violet)}
 .form-note{font-size:.82rem;color:var(--muted)}
-.form-ok{background:color-mix(in srgb,var(--mint) 14%,transparent);border:1px solid var(--mint);color:var(--mint);padding:13px 16px;border-radius:var(--r-sm);font-size:.9rem}
+.form-ok{background:color-mix(in srgb,var(--violet) 14%,transparent);border:1px solid var(--violet);color:var(--violet);padding:13px 16px;border-radius:var(--r-sm);font-size:.9rem}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--line);background:var(--bg-2);padding:64px 0 32px;margin-top:40px}
 .foot-grid{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:34px}
 .foot-col h4{font-family:'Sora';font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:16px}
 .foot-col a{display:block;padding:5px 0;font-size:.9rem;color:var(--muted);transition:color .2s}
-.foot-col a:hover{color:var(--mint)}
+.foot-col a:hover{color:var(--violet)}
 .foot-about p{font-size:.9rem;color:var(--muted);margin:14px 0 18px;max-width:38ch}
 .socials{display:flex;gap:10px}
 .socials a{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
-.socials a:hover{color:var(--mint);border-color:var(--mint)}
+.socials a:hover{color:var(--violet);border-color:var(--violet)}
 .foot-bottom{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font-size:.84rem;color:var(--muted)}
 .pay{display:flex;gap:8px;flex-wrap:wrap}
 .pay span{padding:5px 11px;border:1px solid var(--line);border-radius:8px;font-size:.75rem;font-weight:600}
@@ -445,7 +450,7 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:64px 0 32
 <!-- ===================== NAV ===================== -->
 <div class="nav-outer" id="navOuter">
   <nav class="wrap nav" aria-label="Primary">
-    <a class="logo" href="#/" data-page="home"><span class="logo-mark">H</span><b>host<span>digi</span></b></a>
+    <a class="logo" href="#/" data-page="home"><img class="logo-mark" src="assets/hostdigi-mark-128.png" alt="" width="34" height="32"><b>host<span>digi</span></b></a>
     <div class="nav-links" id="navLinks">
       <a href="#/" data-page="home">Home</a>
       <a href="#/hosting" data-page="hosting">Web Hosting</a>
@@ -515,10 +520,10 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:64px 0 32
           </div>
           <svg class="spark" viewBox="0 0 320 64" preserveAspectRatio="none" aria-hidden="true">
             <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="var(--mint)" stop-opacity=".45"/><stop offset="100%" stop-color="var(--mint)" stop-opacity="0"/>
+              <stop offset="0%" stop-color="var(--violet)" stop-opacity=".45"/><stop offset="100%" stop-color="var(--violet)" stop-opacity="0"/>
             </linearGradient></defs>
             <path d="M0,46 L32,40 L64,44 L96,28 L128,34 L160,18 L192,26 L224,14 L256,22 L288,10 L320,16 L320,64 L0,64 Z" fill="url(#sg)"/>
-            <path d="M0,46 L32,40 L64,44 L96,28 L128,34 L160,18 L192,26 L224,14 L256,22 L288,10 L320,16" fill="none" stroke="var(--mint)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M0,46 L32,40 L64,44 L96,28 L128,34 L160,18 L192,26 L224,14 L256,22 L288,10 L320,16" fill="none" stroke="var(--violet)" stroke-width="2" stroke-linejoin="round"/>
           </svg>
           <div class="log">
             <div><b>✓</b> LiteSpeed cache warmed · 12 ms</div>
@@ -596,7 +601,7 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:64px 0 32
           <p class="lede" style="font-size:.95rem">Deploy in Johannesburg or Cape Town, with automatic failover between them and NAPAfrica peering to every major SA ISP.</p>
           <div class="map" id="zaMap">
             <svg viewBox="0 0 320 190" width="100%" height="190" aria-hidden="true" style="opacity:.28">
-              <path d="M40,60 C70,40 110,42 140,52 C175,64 210,50 250,62 C280,72 292,100 276,128 C252,168 196,178 150,170 C104,162 62,140 46,110 C36,92 30,70 40,60 Z" fill="none" stroke="var(--mint)" stroke-width="1.5"/>
+              <path d="M40,60 C70,40 110,42 140,52 C175,64 210,50 250,62 C280,72 292,100 276,128 C252,168 196,178 150,170 C104,162 62,140 46,110 C36,92 30,70 40,60 Z" fill="none" stroke="var(--violet)" stroke-width="1.5"/>
             </svg>
             <div class="pin" style="left:62%;top:38%"><span>JHB · za-jhb-01</span></div>
             <div class="pin" style="left:26%;top:76%"><span>CPT · za-cpt-01</span></div>
@@ -816,8 +821,8 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:64px 0 32
         <h1 style="font-size:clamp(2rem,4.4vw,3.2rem)">Real people, local hours, fast replies</h1>
         <p class="lede">Tickets are answered by engineers in South Africa — median first response under 12 minutes during business hours, under 40 minutes overnight.</p>
         <div class="grid" style="gap:12px;margin-top:8px">
-          <div class="card" style="padding:20px"><h3 style="font-size:1rem">Sales &amp; new accounts</h3><p class="lede" style="font-size:.9rem">Mon–Fri, 08:00–17:00 SAST · <a href="#/support" style="color:var(--mint)">sales@hostdigi.co.za</a></p></div>
-          <div class="card" style="padding:20px"><h3 style="font-size:1rem">Technical support</h3><p class="lede" style="font-size:.9rem">24/7/365 via ticket and live chat · <a href="#/support" style="color:var(--mint)">support@hostdigi.co.za</a></p></div>
+          <div class="card" style="padding:20px"><h3 style="font-size:1rem">Sales &amp; new accounts</h3><p class="lede" style="font-size:.9rem">Mon–Fri, 08:00–17:00 SAST · <a href="#/support" style="color:var(--violet)">sales@hostdigi.co.za</a></p></div>
+          <div class="card" style="padding:20px"><h3 style="font-size:1rem">Technical support</h3><p class="lede" style="font-size:.9rem">24/7/365 via ticket and live chat · <a href="#/support" style="color:var(--violet)">support@hostdigi.co.za</a></p></div>
           <div class="card" style="padding:20px"><h3 style="font-size:1rem">Emergency / downtime</h3><p class="lede" style="font-size:.9rem">Priority line for hosting customers, published in your client area.</p></div>
         </div>
       </div>
@@ -848,7 +853,7 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:64px 0 32
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-col foot-about">
-        <a class="logo" href="#/" data-page="home"><span class="logo-mark">H</span><b>host<span>digi</span></b></a>
+        <a class="logo" href="#/" data-page="home"><img class="logo-mark" src="assets/hostdigi-mark-128.png" alt="" width="34" height="32"><b>host<span>digi</span></b></a>
         <p>Hostdigi (Pty) Ltd — premium hosting and domain services, born in South Africa, serving customers worldwide.</p>
         <div class="socials">
           <a href="#/" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h3l1-4h-4V8c0-1.1.3-1.8 1.9-1.8H17V2.6C16.4 2.5 15.2 2.4 14 2.4 11.2 2.4 9.3 4.1 9.3 7.2V10H6v4h3.3v8H13Z"/></svg></a>

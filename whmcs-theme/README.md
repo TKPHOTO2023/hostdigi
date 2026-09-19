@@ -78,6 +78,20 @@ These depend on your specific setup and I could not test them against a live WHM
 3. **The announcements block** uses `routePath('announcement-view', ...)`. If your install
    renders announcements differently, delete that section — it is self-contained.
 
+## Brand colours
+
+The palette is sampled from `hostdigi logo.png` — violet `#9568f9`, orchid `#b664f5`,
+periwinkle `#6c95fb` over brand indigo `#5437cb`. In the theme they are exposed as
+`--hd-violet`, `--hd-orchid`, `--hd-periwinkle` and `--hd-brand-indigo`, each with a dark
+and a light value. The root [README](../README.md#brand-palette) has the full table and
+the measured contrast ratios.
+
+`hostdigi.css` is **generated** from the root `index.html` by
+`tools/regen-theme-css.py`. Change colours there and re-run the script rather than
+editing the theme CSS by hand, so the standalone site and the WHMCS theme never drift.
+
+Logo assets for the theme live in `templates/hostdigi/assets/img/`.
+
 ## Styling notes
 
 Every class is prefixed `hd-` and every rule is scoped under `.hd-root`, and the custom

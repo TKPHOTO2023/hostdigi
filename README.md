@@ -51,6 +51,41 @@ recommended way to run this site.
 
 The standalone `index.html` below remains useful as a landing page or design reference.
 
+## Brand palette
+
+Sampled directly from `hostdigi logo.png` rather than eyeballed — the hue buckets in the
+mark's gradient are violet (254–265°), orchid (273°) and periwinkle (222°), over the
+brand indigo of the logo tile.
+
+| Token | Sampled from | Dark theme | Light theme |
+|---|---|---|---|
+| `--violet` (primary) | `#9568f9` mark body | `#a78bfa` | `#5b32c9` |
+| `--periwinkle` (secondary) | `#6c95fb` cool facet | `#8fa9ff` | `#3a4fd0` |
+| `--orchid` (tertiary) | `#b664f5` warm facet | `#c77df7` | `#8a32c9` |
+| `--brand-indigo` | `#5437cb` logo tile | `#5437cb` | `#5437cb` |
+| `--bg` | — | `#0a0722` | `#f7f5fe` |
+| `--text` | — | `#e7e3fb` | `#2a2350` |
+
+Primary buttons use `--violet` with `--violet-ink` for the label, which inverts per theme
+(dark ink on light violet in dark mode, white on deep violet in light mode).
+
+Every pairing was checked for WCAG contrast: body text is 15.7:1 (dark) and 13.4:1
+(light), muted text 8.3:1 and 5.8:1, and the primary button 7.2:1 and 7.7:1 — all
+comfortably past AA, most past AAA.
+
+### Logo assets
+
+| File | Use |
+|---|---|
+| `hostdigi logo.png` | full lockup, white type — dark backgrounds only |
+| `assets/hostdigi-mark.png` | cube mark alone, works on any background |
+| `assets/hostdigi-mark-128.png` | nav-sized mark used by `index.html` |
+| `assets/hostdigi-mark-512.png` | favicon / apple-touch-icon / social |
+
+The wordmark in the nav is set in type rather than being part of an image, so it stays
+crisp and recolours per theme. The white-type lockup is not used on light backgrounds,
+where it would disappear.
+
 ## Wiring the standalone version to WHMCS
 
 | Element | Currently | To go live |
