@@ -69,6 +69,21 @@ const HOSTDIGI_BRAND = 'Hostdigi';
 /** Sort plans cheapest-first rather than by WHMCS's product order. */
 const HOSTDIGI_SORT_BY_PRICE = true;
 
+/**
+ * Optional one-line taglines for the plan cards, keyed by product name
+ * (matched case-insensitively, so a partial name works).
+ *
+ * WHMCS product descriptions are a feature list, not a sentence - rendering
+ * them as a blurb repeated the bullets below and exposed their <br/> markup.
+ * Set a short line here, or leave a plan out and no blurb is shown.
+ */
+const HOSTDIGI_PLAN_TAGLINES = [
+    'Starter Cloud'  => 'One small site, done properly.',
+    'Business Cloud' => 'Room for a growing business.',
+    'Plus Cloud'     => 'More power for busier sites.',
+    'Turbo Cloud'    => 'Our fastest shared platform.',
+];
+
 /** TLDs to feature on the homepage, in display order. */
 const HOSTDIGI_FEATURED_TLDS = ['.co.za', '.africa', '.com', '.net', '.org', '.io'];
 
@@ -247,6 +262,7 @@ add_hook('ClientAreaPageHome', 1, function ($vars) {
                 'annually'     => $annually >= 0 ? hostdigi_price($annually, $currency) : null,
                 'annualPerMonth' => $annually >= 0 ? hostdigi_price($annually / 12, $currency) : null,
                 'sort'         => $monthly >= 0 ? $monthly : ($annually >= 0 ? $annually / 12 : PHP_INT_MAX),
+                'tagline'      => hostdigi_tagline($product['name']),
                 'features'     => hostdigi_features($product['description']),
                 'orderUrl'     => 'cart.php?a=add&pid=' . (int) $product['pid'],
                 'featured'     => false,
@@ -286,6 +302,22 @@ add_hook('ClientAreaPageHome', 1, function ($vars) {
     ];
 });
 
+
+/**
+ * The configured tagline for a product, or '' when none is set.
+ *
+ * Never falls back to the raw description: that is a feature list containing
+ * <br/> markup, which is what the bullets below the card are for.
+ */
+function hostdigi_tagline($name)
+{
+    foreach (HOSTDIGI_PLAN_TAGLINES as $match => $tagline) {
+        if (stripos($name, $match) !== false) {
+            return $tagline;
+        }
+    }
+    return '';
+}
 
 /**
  * Turn a product description into feature bullets.

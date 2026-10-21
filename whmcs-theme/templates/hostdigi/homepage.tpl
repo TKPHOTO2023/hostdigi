@@ -157,7 +157,9 @@
                 {if $plan.featured}<span class="hd-plan-flag">Most popular</span>{/if}
                 <div>
                   <h3>{$plan.name}</h3>
-                  <p class="hd-blurb">{$plan.description|truncate:90:"...":true|escape}</p>
+                  {* Only a configured tagline, never the raw description:
+                     that is a feature list and renders its own <br/> tags. *}
+                  {if $plan.tagline}<p class="hd-blurb">{$plan.tagline|escape}</p>{/if}
                 </div>
 
                 <div class="hd-price">
