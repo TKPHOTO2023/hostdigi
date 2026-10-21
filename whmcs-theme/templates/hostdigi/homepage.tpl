@@ -11,6 +11,39 @@
                      annually, features, orderUrl, featured
       $hdTlds        list of tld, register, transfer, renew
 *}
+{*
+    Critical overrides, inline on purpose.
+
+    These are the rules that MUST apply, so they must not depend on a
+    separate stylesheet request: browser and LiteSpeed caching repeatedly
+    served a stale hostdigi-whmcs.css while the correct file sat on the
+    server unread. Inlining them here means they ship with the HTML itself
+    and cannot be cached separately from the page.
+
+    Selectors confirmed from the live DOM:
+      <form id="frmDomainHomepage" action="domainchecker.php">
+        <div class="home-domain-search bg-white"> ... </div>
+      </form>
+*}
+<style>
+  /* Twenty-One's own homepage domain search, above our content. */
+  #frmDomainHomepage,
+  .home-domain-search,
+  .master-breadcrumb {
+    display: none !important;
+  }
+
+  /* No white strip where that block used to sit. */
+  body.primary-bg-color,
+  #main-body {
+    background: #0a0722 !important;
+  }
+  #main-body {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+</style>
+
 <div class="hd-root" data-theme="dark">
 
   {* ---------------------------------------------------------------- hero *}
