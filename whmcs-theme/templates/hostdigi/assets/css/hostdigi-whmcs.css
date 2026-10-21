@@ -265,3 +265,25 @@ body.hd-home .domain-search-container,
 body.hd-home .domainchecker-homepage {
   display: none;
 }
+
+/* --- flatten the wrappers our content sits in ----------------------------
+   hostdigi.js tags every ancestor of .hd-root with hd-flush. Removing their
+   padding, width limit and background closes the white strip that Twenty-One
+   leaves between the navbar and our hero once its own homepage block is
+   hidden. Scoped to the homepage, so the client area keeps its layout. */
+body.hd-home .hd-flush {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  max-width: none !important;
+  background: var(--hd-bg) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* The page itself, below the navbar, should carry the theme background so
+   no white shows through at the seams or past the end of the content. */
+body.hd-home {
+  background: var(--hd-bg) !important;
+}

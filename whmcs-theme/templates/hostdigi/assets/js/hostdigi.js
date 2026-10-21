@@ -14,6 +14,23 @@
   // from the client area (hides the breadcrumb, carries the dark background).
   document.body.classList.add('hd-home');
 
+  /* ------------------------------------------------- flush the page wrappers
+     Twenty-One wraps page content in containers with their own padding, max
+     width and white background. Once the parent hero is hidden, that padding
+     is left behind as a white strip between the navbar and our hero.
+
+     Rather than guess Twenty-One's class names - which differ by WHMCS
+     version - walk up from our own content and tag every ancestor. The CSS
+     then flattens exactly the wrappers that actually contain us, and nothing
+     else on the page.                                                      */
+  (function flushAncestors() {
+    var node = root.parentElement;
+    while (node && node !== document.body) {
+      node.classList.add('hd-flush');
+      node = node.parentElement;
+    }
+  })();
+
   /* ------------------------------------------- hide the parent theme's hero
      Twenty-One renders its own "Secure your domain name" block above the
      homepage content, so without this the page shows two domain searches,
