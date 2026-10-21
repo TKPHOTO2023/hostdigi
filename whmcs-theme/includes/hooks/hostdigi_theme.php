@@ -77,21 +77,37 @@ const HOSTDIGI_CACHE_TTL = 900;
 
 /* ------------------------------------------------------------------ assets */
 
+/**
+ * Cache-busting version for a theme asset.
+ *
+ * Returns the file's modification time, so every upload produces a new URL
+ * and browsers (and LiteSpeed) fetch the new file immediately. A hardcoded
+ * version string meant edits could sit on the server unread behind a cached
+ * copy - which is exactly what happened.
+ */
+function hostdigi_asset_version($relativePath)
+{
+    $path = (defined('ROOTDIR') ? ROOTDIR : __DIR__ . '/../..') . $relativePath;
+    $mtime = @filemtime($path);
+    return $mtime ?: '1';
+}
+
 add_hook('ClientAreaHeadOutput', 1, function ($vars) {
     $root = rtrim($vars['WEB_ROOT'] ?? '', '/');
-    $v = '1.0.0'; // bump to bust browser caches after a CSS change
+    $vCss = hostdigi_asset_version('/templates/hostdigi/assets/css/hostdigi.css');
+    $vWhmcs = hostdigi_asset_version('/templates/hostdigi/assets/css/hostdigi-whmcs.css');
     return <<<HTML
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{$root}/templates/hostdigi/assets/css/hostdigi.css?v={$v}">
-<link rel="stylesheet" href="{$root}/templates/hostdigi/assets/css/hostdigi-whmcs.css?v={$v}">
+<link rel="stylesheet" href="{$root}/templates/hostdigi/assets/css/hostdigi.css?v={$vCss}">
+<link rel="stylesheet" href="{$root}/templates/hostdigi/assets/css/hostdigi-whmcs.css?v={$vWhmcs}">
 HTML;
 });
 
 add_hook('ClientAreaFooterOutput', 1, function ($vars) {
     $root = rtrim($vars['WEB_ROOT'] ?? '', '/');
-    $v = '1.0.0';
+    $v = hostdigi_asset_version('/templates/hostdigi/assets/js/hostdigi.js');
     return '<script src="' . $root . '/templates/hostdigi/assets/js/hostdigi.js?v=' . $v . '" defer></script>';
 });
 
