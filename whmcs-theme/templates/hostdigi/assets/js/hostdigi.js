@@ -7,6 +7,41 @@
 (function () {
   'use strict';
 
+  /* -------------------------------------------------------- brand the navbar
+     Twenty-One renders the company name as text in the header. Swap it for
+     the logo lockup.
+
+     Finds the brand by following the header's link back to the site root
+     rather than by class name, since Twenty-One's markup varies by version
+     and guessing selectors has cost us several rounds already. Runs on every
+     page, so it sits above the homepage-only guard below.                 */
+  (function brandNavbar() {
+    var header = document.getElementById('header') || document.querySelector('header');
+    if (!header) return;
+
+    var links = header.querySelectorAll('a');
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      if (link.querySelector('img')) continue;              // already has a logo
+      if (!link.textContent.trim()) continue;               // icon-only link
+
+      var href = link.getAttribute('href') || '';
+      var isHome = href === '/' || href === '' || href === '#' ||
+                   /(^|\/)(index\.php)?(\?.*)?$/.test(href.replace(location.origin, ''));
+      if (!isHome) continue;
+
+      var base = (link.getAttribute('href') || '').replace(/index\.php.*$/, '');
+      var img = document.createElement('img');
+      img.src = (base || '/') + 'templates/hostdigi/assets/img/hostdigi-logo.png';
+      img.alt = link.textContent.trim();
+      img.className = 'hd-brand-logo';
+      link.textContent = '';
+      link.appendChild(img);
+      link.classList.add('hd-branded');
+      return;                                               // first match only
+    }
+  })();
+
   var root = document.querySelector('.hd-root');
   if (!root) return;
 

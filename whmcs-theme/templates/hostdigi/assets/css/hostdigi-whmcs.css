@@ -308,3 +308,18 @@ body.hd-home .hd-flush {
 body.hd-home {
   background: var(--hd-bg) !important;
 }
+
+/* --- the logo in the navbar ----------------------------------------------
+   hostdigi.js replaces the header's text company name with the lockup. The
+   image is twice its display size so it stays sharp on retina screens, and
+   the white wordmark suits the dark navbar in both themes (the light theme
+   keeps the chrome brand-indigo, so it never sits on white). */
+.hd-brand-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  max-width: 100%;
+}
+@media (max-width: 575px) {
+  .hd-brand-logo { height: 32px; }
+}
