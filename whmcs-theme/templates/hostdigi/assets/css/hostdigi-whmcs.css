@@ -253,7 +253,28 @@ a:hover {
   color: #fff !important;
 }
 
-/* --- belt and braces for the parent theme's homepage hero ----------------
+/* --- the parent theme's homepage hero, by its real selectors -------------
+   Confirmed from the live DOM rather than guessed:
+
+       <form id="frmDomainHomepage" action="domainchecker.php">
+         <div class="home-domain-search bg-white"> ... </div>
+       </form>
+
+   The form is a direct child of <body>, a sibling of #main-body, which is
+   why walking up from it in JS found nothing to hide. These exact selectors
+   need no JS at all. Homepage-scoped, so the real domain checker page and
+   the client area are untouched. */
+body.hd-home #frmDomainHomepage,
+body.hd-home .home-domain-search {
+  display: none !important;
+}
+
+/* Twenty-One's breadcrumb here is .master-breadcrumb, not .breadcrumb. */
+body.hd-home .master-breadcrumb {
+  display: none !important;
+}
+
+/* --- older fallbacks, kept harmless --------------------------------------
    hostdigi.js hides it by finding the stray domain-search form, which works
    regardless of markup. These id/class fallbacks cover the case where JS is
    blocked, and are scoped to the homepage so they can never affect the real

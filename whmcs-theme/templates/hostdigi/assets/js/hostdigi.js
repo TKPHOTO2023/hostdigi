@@ -65,6 +65,11 @@
 
       if (!looksLikeDomainSearch) return;
 
+      // Hide the form itself first. On this install the form is a direct
+      // child of <body>, so the ancestor walk below finds nothing - which is
+      // exactly why an earlier version of this silently did nothing.
+      form.setAttribute('data-hd-hidden', 'true');
+
       var node = form;
       for (var i = 0; i < 6 && node && node.parentElement; i++) {
         node = node.parentElement;
